@@ -14,14 +14,18 @@ object BuildSettings {
   val buildSettings = Defaults.defaultSettings ++ Seq(
     organization := "org.webjars",
     name := "webjars-play",
-    version := "0.1-SNAPSHOT",
+    version := "0.1",
     scalaVersion := "2.9.1",
+    autoScalaLibrary := false,
     crossPaths := false,
-    libraryDependencies += "play" %% "play" % "2.0.4" % "provided"
+    libraryDependencies ++= Seq("org.scala-lang" % "scala-library" % "2.9.1" % "provided", "play" %% "play" % "2.0.4" % "provided"),
+    licenses := Seq("MIT License" -> url("http://opensource.org/licenses/MIT")),
+    homepage := Some(url("http://github.com/webjars/webjars-play"))
   )
 
   val sonatypeSettings = Seq(
     publishMavenStyle := true,
+    publishArtifact in Test := false,
     pomIncludeRepository := { _ => false },
     publishTo <<= version { (v: String) =>
       val nexus = "https://oss.sonatype.org/"
@@ -32,14 +36,6 @@ object BuildSettings {
     },
     credentials += Credentials(Path.userHome / ".ivy2" / ".credentials"),
     pomExtra := (
-      <url>http://github.com/webjars/webjars-play</url>
-      <licenses>
-        <license>
-          <name>MIT License</name>
-          <url>http://opensource.org/licenses/MIT</url>
-          <distribution>repo</distribution>
-        </license>
-      </licenses>
       <scm>
         <connection>scm:git:https://github.com/webjars/webjars-play.git</connection>
         <developerConnection>scm:git:https://github.com/webjars/webjars-play.git</developerConnection>
