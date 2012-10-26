@@ -14,7 +14,7 @@ object BuildSettings {
   val buildSettings = Defaults.defaultSettings ++ Seq(
     organization := "org.webjars",
     name := "webjars-play",
-    version := "0.1",
+    version := "0.2-SNAPSHOT",
     scalaVersion := "2.9.1",
     autoScalaLibrary := false,
     crossPaths := false,
