@@ -6,15 +6,15 @@ object BuildSettings {
   val buildSettings = Defaults.defaultSettings ++ Seq(
     organization := "org.webjars",
     name := "webjars-play",
-    version := "2.1.0-SNAPSHOT",
+    version := "2.1-RC1",
     scalaVersion := "2.10.0-RC1",
     autoScalaLibrary := false,
     crossPaths := false,
-    resolvers += Resolver.file("PlayIvy", file("/home/jamesw/projects/Play20/repository/local"))(Resolver.ivyStylePatterns),
+    resolvers += "Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases",
     libraryDependencies ++= Seq(
       "org.scala-lang" % "scala-library" % "2.10.0-RC1" % "provided",
-      "play" %% "play" % "2.1-SNAPSHOT" % "provided",
-      "org.reflections" % "reflections" % "0.9.8" % "provided",
+      "play" %% "play" % "2.1-RC1" % "provided",
+      "org.reflections" % "reflections" % "0.9.8",
       "javax.servlet" % "javax.servlet-api" % "3.0.1" % "provided"
     ),
     licenses := Seq("MIT License" -> url("http://opensource.org/licenses/MIT")),
