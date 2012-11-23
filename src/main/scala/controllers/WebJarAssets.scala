@@ -30,8 +30,6 @@ object WebJarAssets {
     
     val reflections = new Reflections(config)
     
-    println(reflections.getStore.getStoreMap.values)
-    
     // the map in the reflection store is just the file name so if the file being located doesn't contain a "/" then
     // a shortcut can be taken.  Otherwise the collection of multimap's values need to be searched.
     // Either way the first match is returned (if there is a match)
