@@ -1,24 +1,22 @@
 import sbt._
 import sbt.Keys._
 
-object Resolvers {
-  val resolvers = Seq(
-    "Sonatype Releases" at "http://oss.sonatype.org/content/repositories/releases",
-    "Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases"
-  )
-}
-
 object BuildSettings {
-  import Resolvers._
 
   val buildSettings = Defaults.defaultSettings ++ Seq(
     organization := "org.webjars",
     name := "webjars-play",
-    version := "0.2-SNAPSHOT",
+    version := "2.0-SNAPSHOT",
     scalaVersion := "2.9.1",
+    resolvers += "Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases",
     autoScalaLibrary := false,
     crossPaths := false,
-    libraryDependencies ++= Seq("org.scala-lang" % "scala-library" % "2.9.1" % "provided", "play" %% "play" % "2.0.4" % "provided"),
+    libraryDependencies ++= Seq(
+      "org.scala-lang" % "scala-library" % "2.9.1" % "provided",
+      "play" %% "play" % "2.0.4" % "provided",
+      "org.reflections" % "reflections" % "0.9.8",
+      "javax.servlet" % "javax.servlet-api" % "3.0.1" % "provided"
+    ),
     licenses := Seq("MIT License" -> url("http://opensource.org/licenses/MIT")),
     homepage := Some(url("http://github.com/webjars/webjars-play"))
   )
