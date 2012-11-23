@@ -6,7 +6,7 @@ object BuildSettings {
   val buildSettings = Defaults.defaultSettings ++ Seq(
     organization := "org.webjars",
     name := "webjars-play",
-    version := "2.0-SNAPSHOT",
+    version := "2.0",
     scalaVersion := "2.9.1",
     resolvers += "Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases",
     autoScalaLibrary := false,
