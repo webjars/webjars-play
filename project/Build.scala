@@ -7,13 +7,13 @@ object BuildSettings {
     organization := "org.webjars",
     name := "webjars-play",
     version := "2.1-RC1",
-    scalaVersion := "2.10.0-RC1",
+    scalaVersion := "2.10.0",
     autoScalaLibrary := false,
     crossPaths := false,
     resolvers += "Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases",
     libraryDependencies ++= Seq(
-      "org.scala-lang" % "scala-library" % "2.10.0-RC1" % "provided",
-      "play" %% "play" % "2.1-RC1" % "provided",
+      "org.scala-lang" % "scala-library" % "2.10.0" % "provided",
+      "play" %% "play" % "2.1.0" % "provided",
       "org.reflections" % "reflections" % "0.9.8",
       "javax.servlet" % "javax.servlet-api" % "3.0.1" % "provided"
     ),
