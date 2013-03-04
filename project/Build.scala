@@ -6,7 +6,7 @@ object BuildSettings {
   val buildSettings = Defaults.defaultSettings ++ Seq(
     organization := "org.webjars",
     name := "webjars-play",
-    version := "2.1.1-SNAPSHOT",
+    version := "2.1.0-1-SNAPSHOT",
     scalaVersion := "2.10.0",
     autoScalaLibrary := false,
     crossPaths := false,
@@ -15,11 +15,13 @@ object BuildSettings {
       "org.scala-lang" % "scala-library" % "2.10.0" % "provided",
       "play" %% "play" % "2.1.0" % "provided",
       "org.reflections" % "reflections" % "0.9.8",
-      "javax.servlet" % "javax.servlet-api" % "3.0.1" % "provided"
-    ),
+      "javax.servlet" % "javax.servlet-api" % "3.0.1" % "provided",
+      "junit" % "junit" % "4.11" % "test",
+      "org.specs2" %% "specs2" % "1.14" % "test",
+      "play" %% "play-test" % "2.1.0" % "test",
+      "org.webjars" % "requirejs" % "2.1.1" % "test"),
     licenses := Seq("MIT License" -> url("http://opensource.org/licenses/MIT")),
-    homepage := Some(url("http://github.com/webjars/webjars-play"))
-  )
+    homepage := Some(url("http://github.com/webjars/webjars-play")))
 
   val sonatypeSettings = Seq(
     publishMavenStyle := true,
@@ -27,9 +29,9 @@ object BuildSettings {
     pomIncludeRepository := { _ => false },
     publishTo <<= version { (v: String) =>
       val nexus = "https://oss.sonatype.org/"
-      if (v.trim.endsWith("SNAPSHOT")) 
-        Some("snapshots" at nexus + "content/repositories/snapshots") 
-      else 
+      if (v.trim.endsWith("SNAPSHOT"))
+        Some("snapshots" at nexus + "content/repositories/snapshots")
+      else
         Some("releases" at nexus + "service/local/staging/deploy/maven2")
     },
     credentials += Credentials(Path.userHome / ".ivy2" / ".credentials"),
@@ -50,9 +52,7 @@ object BuildSettings {
         <groupId>org.sonatype.oss</groupId>
         <artifactId>oss-parent</artifactId>
         <version>7</version>
-      </parent>
-    )
-  )
+      </parent>))
 }
 
 object WebJarsPlayBuild extends Build {
@@ -61,6 +61,5 @@ object WebJarsPlayBuild extends Build {
   lazy val root = Project(
     "webjars-play",
     file("."),
-    settings = buildSettings ++ sonatypeSettings ++ Seq()
-  )
+    settings = buildSettings ++ sonatypeSettings ++ Seq())
 }
