@@ -35,7 +35,7 @@ class WebJarAssets extends Controller with RequirejsProducer {
     .getOrElse(WEBJAR_FILTER_EXPR_DEFAULT)
   val webJarPathPrefix = new Regex(current.configuration.getString(WEBJAR_PATH_PREFIX_PROP)
     .getOrElse(WEBJAR_PATH_PREFIX_DEFAULT))
-  
+
   def routes = AssetLocator.listAssets("/").asScala
     .filter { path =>
       webJarPathPrefix.findFirstIn(path).isDefined
@@ -56,7 +56,7 @@ class WebJarAssets extends Controller with RequirejsProducer {
    * Return the path of a WebJar asset
    * Transforms a file lookup like "jquery.min.js" to the path sans-the webjars prefix,
    * like "jquery/1.8.2/jquery.min.js"
-   * 
+   *
    */
   def locate(file: String): String = {
     AssetLocator.getWebJarPath(file)
