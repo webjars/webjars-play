@@ -31,15 +31,15 @@ class WebJarAssets extends Controller with RequirejsProducer {
   val WEBJAR_PATH_PREFIX_DEFAULT = "/webjars"
   val WEBJAR_PATH_PREFIX_PROP = "org.webjars.play.webJarPathPrefix"
 
+  val WEBJARS_PATH_PREFIX = AssetLocator.WEBJARS_PATH_PREFIX.mkString("/")
+
   val webJarFilterExpr = current.configuration.getString(WEBJAR_FILTER_EXPR_PROP)
     .getOrElse(WEBJAR_FILTER_EXPR_DEFAULT)
-  val webJarPathPrefix = new Regex(current.configuration.getString(WEBJAR_PATH_PREFIX_PROP)
-    .getOrElse(WEBJAR_PATH_PREFIX_DEFAULT))
+  val webJarPathPrefix = current.configuration.getString(WEBJAR_PATH_PREFIX_PROP)
+    .getOrElse(WEBJAR_PATH_PREFIX_DEFAULT)
 
-  def routes = AssetLocator.listAssets("/").asScala
-    .filter { path =>
-      webJarPathPrefix.findFirstIn(path).isDefined
-    }
+  val routes = AssetLocator.listAssets("/").asScala
+    .filter { path => path.matches(webJarFilterExpr) }
     .map { path =>
       (path.split("/").last, path)
     }
@@ -49,7 +49,7 @@ class WebJarAssets extends Controller with RequirejsProducer {
    * Returns the contents of a WebJar asset
    */
   def at(file: String): Action[AnyContent] = {
-    Assets.at("/" + Arrays.asList(AssetLocator.WEBJARS_PATH_PREFIX).asScala.mkString("/"), file) // path = /META-INF/resources/webjars
+    Assets.at("/" + WEBJARS_PATH_PREFIX, file)
   }
 
   /**
@@ -67,8 +67,9 @@ class WebJarAssets extends Controller with RequirejsProducer {
    * located using the "webjars!" loader plugin convention.
    */
   def requirejs = Action {
-    // todo: give this a list of files
-    Ok(produce(routes.mapValues(webJarPath => webJarPathPrefix + "/" + webJarPath))).as(JAVASCRIPT)
+    Ok(produce(routes.mapValues { webJarPath =>
+      webJarPathPrefix + webJarPath.stripPrefix(WEBJARS_PATH_PREFIX)
+    })).as(JAVASCRIPT)
   }
 }
 
