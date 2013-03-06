@@ -9,10 +9,11 @@ import play.Configuration
 import play.api.Play.current
 import scala.util.matching.Regex
 import play.api.Play
-import org.webjars.AssetLocator
 import scala.collection.JavaConverters._
 import org.apache.commons.lang.StringUtils
 import java.util.Arrays
+import scala.collection.immutable.TreeMap
+import org.webjars.WebJarAssetLocator
 
 /**
  * A Play framework controller that is able to resolve webjar paths.
@@ -31,25 +32,18 @@ class WebJarAssets extends Controller with RequirejsProducer {
   val WEBJAR_PATH_PREFIX_DEFAULT = "/webjars"
   val WEBJAR_PATH_PREFIX_PROP = "org.webjars.play.webJarPathPrefix"
 
-  val WEBJARS_PATH_PREFIX = AssetLocator.WEBJARS_PATH_PREFIX.mkString("/")
-
   val webJarFilterExpr = current.configuration.getString(WEBJAR_FILTER_EXPR_PROP)
     .getOrElse(WEBJAR_FILTER_EXPR_DEFAULT)
   val webJarPathPrefix = current.configuration.getString(WEBJAR_PATH_PREFIX_PROP)
     .getOrElse(WEBJAR_PATH_PREFIX_DEFAULT)
 
-  val routes = AssetLocator.listAssets("/").asScala
-    .filter { path => path.matches(webJarFilterExpr) }
-    .map { path =>
-      (path.split("/").last, path)
-    }
-    .toMap[String, String]
+  val fullPathIndex = WebJarAssetLocator.getFullPathIndex(new Regex(webJarFilterExpr).pattern, Play.application.classloader)
 
   /**
    * Returns the contents of a WebJar asset
    */
   def at(file: String): Action[AnyContent] = {
-    Assets.at("/" + WEBJARS_PATH_PREFIX, file)
+    Assets.at("/" + WebJarAssetLocator.WEBJARS_PATH_PREFIX, file)
   }
 
   /**
@@ -59,7 +53,7 @@ class WebJarAssets extends Controller with RequirejsProducer {
    *
    */
   def locate(file: String): String = {
-    AssetLocator.getWebJarPath(file)
+    WebJarAssetLocator.getFullPath(fullPathIndex, file)
   }
 
   /**
@@ -67,9 +61,9 @@ class WebJarAssets extends Controller with RequirejsProducer {
    * located using the "webjars!" loader plugin convention.
    */
   def requirejs = Action {
-    Ok(produce(routes.mapValues { webJarPath =>
-      webJarPathPrefix + webJarPath.stripPrefix(WEBJARS_PATH_PREFIX)
-    })).as(JAVASCRIPT)
+    Ok(produce(fullPathIndex.asScala.mapValues { webJarPath =>
+      webJarPathPrefix + webJarPath.stripPrefix(WebJarAssetLocator.WEBJARS_PATH_PREFIX)
+    }.toMap)).as(JAVASCRIPT)
   }
 }
 
