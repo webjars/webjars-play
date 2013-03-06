@@ -17,7 +17,7 @@ trait RequirejsProducer {
       var routes = ${Json.stringify(Json.toJson(routes))};
       var webjarLoader = function(name, req, onload, config) {
         req([routes[name]], function(value) {
-          onload(value);
+          onload(value);  // todo: implement module ids and partial paths
         });
       }
       require = {

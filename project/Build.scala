@@ -14,12 +14,13 @@ object BuildSettings {
     libraryDependencies ++= Seq(
       "org.scala-lang" % "scala-library" % "2.10.0" % "provided",
       "play" %% "play" % "2.1.0" % "provided",
-      "org.reflections" % "reflections" % "0.9.8",
       "javax.servlet" % "javax.servlet-api" % "3.0.1" % "provided",
+      "org.reflections" % "reflections" % "0.9.8",
+      "org.webjars" % "requirejs" % "2.1.1",
+      "org.webjars" % "webjars-locator" % "0.2",
       "junit" % "junit" % "4.11" % "test",
       "org.specs2" %% "specs2" % "1.14" % "test",
-      "play" %% "play-test" % "2.1.0" % "test",
-      "org.webjars" % "requirejs" % "2.1.1" % "test"),
+      "play" %% "play-test" % "2.1.0" % "test"),
     licenses := Seq("MIT License" -> url("http://opensource.org/licenses/MIT")),
     homepage := Some(url("http://github.com/webjars/webjars-play")))
 
