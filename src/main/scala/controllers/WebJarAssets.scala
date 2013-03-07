@@ -55,7 +55,7 @@ class WebJarAssets extends Controller with RequirejsProducer {
    *
    */
   def locate(file: String): String = {
-    webJarAssetLocator.getFullPath(file)
+    webJarAssetLocator.getFullPath(file).stripPrefix(WebJarAssetLocator.WEBJARS_PATH_PREFIX + "/")
   }
 
   /**
