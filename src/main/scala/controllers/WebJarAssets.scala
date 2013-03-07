@@ -37,7 +37,9 @@ class WebJarAssets extends Controller with RequirejsProducer {
   val webJarPathPrefix = current.configuration.getString(WEBJAR_PATH_PREFIX_PROP)
     .getOrElse(WEBJAR_PATH_PREFIX_DEFAULT)
 
-  val fullPathIndex = WebJarAssetLocator.getFullPathIndex(new Regex(webJarFilterExpr).pattern, Play.application.classloader)
+  val webJarAssetLocator = new WebJarAssetLocator(
+    WebJarAssetLocator.getFullPathIndex(
+      new Regex(webJarFilterExpr).pattern, Play.application.classloader))
 
   /**
    * Returns the contents of a WebJar asset
@@ -53,7 +55,7 @@ class WebJarAssets extends Controller with RequirejsProducer {
    *
    */
   def locate(file: String): String = {
-    WebJarAssetLocator.getFullPath(fullPathIndex, file)
+    webJarAssetLocator.getFullPath(file)
   }
 
   /**
@@ -61,7 +63,7 @@ class WebJarAssets extends Controller with RequirejsProducer {
    * located using the "webjars!" loader plugin convention.
    */
   def requirejs = Action {
-    Ok(produce(fullPathIndex.asScala.mapValues { webJarPath =>
+    Ok(produce(webJarAssetLocator.getFullPathIndex.asScala.mapValues { webJarPath =>
       webJarPathPrefix + webJarPath.stripPrefix(WebJarAssetLocator.WEBJARS_PATH_PREFIX)
     }.toMap)).as(JAVASCRIPT)
   }
