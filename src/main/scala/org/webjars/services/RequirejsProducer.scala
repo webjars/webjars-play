@@ -45,7 +45,7 @@ trait RequirejsProducer {
     
       webjarLoader = function(name, req, onload, config) {
         req([getFullPath(name)], function(value) {
-          onload(value);  // todo: implement module ids and partial paths
+          onload(value);
         });
       }
      
