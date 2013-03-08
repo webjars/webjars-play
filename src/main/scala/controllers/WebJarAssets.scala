@@ -14,6 +14,7 @@ import org.apache.commons.lang.StringUtils
 import java.util.Arrays
 import scala.collection.immutable.TreeMap
 import org.webjars.WebJarAssetLocator
+import org.webjars.services.Route
 
 /**
  * A Play framework controller that is able to resolve webjar paths.
@@ -27,15 +28,15 @@ import org.webjars.WebJarAssetLocator
  */
 class WebJarAssets extends Controller with RequirejsProducer {
 
-  val WEBJAR_FILTER_EXPR_DEFAULT = """.*"""
-  val WEBJAR_FILTER_EXPR_PROP = "org.webjars.play.webJarFilterExpr"
-  val WEBJAR_PATH_PREFIX_DEFAULT = "/webjars"
-  val WEBJAR_PATH_PREFIX_PROP = "org.webjars.play.webJarPathPrefix"
+  val WebjarFilterExprDefault = """.*"""
+  val WebjarFilterExprProp = "org.webjars.play.webJarFilterExpr"
+  val WebjarPathPrefixDefault = "/webjars"
+  val WebjarPathPrefixProp = "org.webjars.play.webJarPathPrefix"
 
-  val webJarFilterExpr = current.configuration.getString(WEBJAR_FILTER_EXPR_PROP)
-    .getOrElse(WEBJAR_FILTER_EXPR_DEFAULT)
-  val webJarPathPrefix = current.configuration.getString(WEBJAR_PATH_PREFIX_PROP)
-    .getOrElse(WEBJAR_PATH_PREFIX_DEFAULT)
+  val webJarFilterExpr = current.configuration.getString(WebjarFilterExprProp)
+    .getOrElse(WebjarFilterExprDefault)
+  val webJarPathPrefix = current.configuration.getString(WebjarPathPrefixProp)
+    .getOrElse(WebjarPathPrefixDefault)
 
   val webJarAssetLocator = new WebJarAssetLocator(
     WebJarAssetLocator.getFullPathIndex(
@@ -61,10 +62,12 @@ class WebJarAssets extends Controller with RequirejsProducer {
   /**
    * Return the bootstrapping required for require.js so that assets can be
    * located using the "webjars!" loader plugin convention.
+   * FIXME: Source the dependencies.
    */
   def requirejs = Action {
     Ok(produce(webJarAssetLocator.getFullPathIndex.asScala.mapValues { webJarPath =>
-      webJarPathPrefix + webJarPath.stripPrefix(WebJarAssetLocator.WEBJARS_PATH_PREFIX)
+      val fullPath = webJarPathPrefix + webJarPath.stripPrefix(WebJarAssetLocator.WEBJARS_PATH_PREFIX)
+      Route(fullPath, List[String]())
     }.toMap)).as(JAVASCRIPT)
   }
 }

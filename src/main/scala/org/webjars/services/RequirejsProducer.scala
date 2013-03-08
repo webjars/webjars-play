@@ -2,6 +2,12 @@ package org.webjars.services
 
 import play.api.libs.json._
 
+case class Route(fullPath: String, dependencies: List[String])
+
+object RouteSerializer {
+  implicit def routeWriter: Writes[Route] = Json.writes[Route]
+}
+
 /**
  * Builds require.js bootstrap code whereby all of the webjar resources are
  * resolved and declared to a require.js loader. The real require.js is then
@@ -10,14 +16,14 @@ import play.api.libs.json._
  */
 trait RequirejsProducer {
 
-  def produce(routes: Map[String, String]): String = {
+  import RouteSerializer._
+
+  def produce(routes: Map[String, Route]): String = {
     s"""
     var require;
-    (function() {
-      var routes, script, webjarLoader;
+    (function(routes) {
+      var rjsReverseFullPath, script;
     
-      routes = ${Json.stringify(Json.toJson(routes))};
-      
       function reversePath(n) {
         var comps, i, rn;
         comps = n.split("/");
@@ -31,22 +37,45 @@ trait RequirejsProducer {
         return rn;
       }
 
-      function getFullPath(partialPath) {
-        var p, rpp, route;
-        rpp = reversePath(partialPath);
+      function getReverseFullPath(partialPath) {
+        var p, reverseFullPath, reversePartialPath, route;
+        reversePartialPath = reversePath(partialPath);
         for (p in routes) {
-          if (routes.hasOwnProperty(p) && p.indexOf(rpp) === 0) {
-            route = routes[p];
+          if (routes.hasOwnProperty(p) && p.indexOf(reversePartialPath) === 0) {
+            reverseFullPath = p;
             break;
           } 
         }
-        return route;
+        return reverseFullPath;
       }
     
-      webjarLoader = function(name, req, onload, config) {
-        req([getFullPath(name)], function(value) {
-          onload(value);
-        });
+      function getDependencyFullPaths(route) {
+        var dependencyFullPaths, dependencyRouteKey, i;
+        dependencyFullPaths = new Array(route.dependencies.length);
+        for (i = 0; i < route.dependencies.length; ++i) {
+          dependencyRouteKey = getReverseFullPath(route.dependencies[i]);
+          dependencyRoute = routes[dependencyRouteKey];
+          if (dependencyRoute === undefined) {
+              throw "No WebJar dependency found for " + route.dependencies[i] + 
+                ". Please ensure that this is a valid dependency";
+          } else {
+            dependencyFullPaths.push(dependencyRoute.fullPath);
+          }
+        }
+        return dependencyFullPaths;
+      }
+    
+      function webjarLoader(name, req, onload, config) {
+        var routeKey = getReverseFullPath(name);
+        var route = routes[routeKey];
+        if (route === undefined) {
+          throw "No WebJar dependency found for " + name + 
+            ". Please ensure that this is a valid dependency";
+        }
+        function mainLoader() {
+          req([route.fullPath], onload);
+        }
+        req(getDependencyFullPaths(route), mainLoader);
       }
      
       require = {
@@ -59,9 +88,10 @@ trait RequirejsProducer {
     
       script = document.createElement("script");
       script.setAttribute("type", "application/javascript");
-      script.setAttribute("src", getFullPath("require.js"));
+      rjsReverseFullPath = getReverseFullPath("require.js");
+      script.setAttribute("src", routes[rjsReverseFullPath].fullPath);
       document.getElementsByTagName("head")[0].appendChild(script);
-    }());
+    }(${Json.stringify(Json.toJson(routes))}));
             """
   }
 }
