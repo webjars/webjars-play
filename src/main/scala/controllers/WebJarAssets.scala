@@ -33,6 +33,8 @@ class WebJarAssets extends Controller with RequirejsProducer {
   val WebjarPathPrefixDefault = "/webjars"
   val WebjarPathPrefixProp = "org.webjars.play.webJarPathPrefix"
 
+  val WebjarRequireJsConfigFile = "/webjars-requirejs.js"
+
   val webJarFilterExpr = current.configuration.getString(WebjarFilterExprProp)
     .getOrElse(WebjarFilterExprDefault)
   val webJarPathPrefix = current.configuration.getString(WebjarPathPrefixProp)
@@ -62,13 +64,31 @@ class WebJarAssets extends Controller with RequirejsProducer {
   /**
    * Return the bootstrapping required for require.js so that assets can be
    * located using the "webjars!" loader plugin convention.
-   * FIXME: Source the dependencies.
    */
   def requirejs = Action {
     Ok(produce(webJarAssetLocator.getFullPathIndex.asScala.mapValues { webJarPath =>
-      val fullPath = webJarPathPrefix + webJarPath.stripPrefix(WebJarAssetLocator.WEBJARS_PATH_PREFIX)
-      Route(fullPath, List[String]())
+      val relWebJarPath = webJarPath.stripPrefix(WebJarAssetLocator.WEBJARS_PATH_PREFIX)
+      val assetPath = webJarPathPrefix + relWebJarPath
+      val requireJsConfigPath = webJarPathPrefix + requirejsConfigPath(relWebJarPath)
+      Route(assetPath, List[String](requireJsConfigPath))
     }.toMap)).as(JAVASCRIPT)
+  }
+
+  /*
+   * Extract a requirejs configuration path given a relative webjar path.
+   */
+  private def requirejsConfigPath(relWebJarPath: String): String = {
+    val artifactIdDelim = relWebJarPath.indexOf('/', 1)
+    if (artifactIdDelim < 0) {
+      return ""
+    }
+    val artifactId = relWebJarPath.substring(0, artifactIdDelim)
+    val versionDelim = relWebJarPath.indexOf('/', artifactIdDelim + 1)
+    if (versionDelim < 0) {
+      return ""
+    }
+    val version = relWebJarPath.substring(artifactIdDelim, versionDelim)
+    artifactId + version + WebjarRequireJsConfigFile
   }
 }
 

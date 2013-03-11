@@ -55,16 +55,16 @@ trait RequirejsProducer {
         for (i = 0; i < route.dependencies.length; ++i) {
           dependencyRouteKey = getReverseFullPath(route.dependencies[i]);
           dependencyRoute = routes[dependencyRouteKey];
-          if (dependencyRoute === undefined) {
-              throw "No WebJar dependency found for " + route.dependencies[i] + 
-                ". Please ensure that this is a valid dependency";
-          } else {
+          if (dependencyRoute !== undefined) {
             dependencyFullPaths.push(dependencyRoute.fullPath);
           }
         }
         return dependencyFullPaths;
       }
     
+      // Load a module's dependencies that we know about, and then any that 
+      // are declared via the dependencies coming in, and then the module
+      // itself.
       function webjarLoader(name, req, onload, config) {
         var routeKey = getReverseFullPath(name);
         var route = routes[routeKey];
@@ -73,9 +73,30 @@ trait RequirejsProducer {
             ". Please ensure that this is a valid dependency";
         }
         function mainLoader() {
-          req([route.fullPath], onload);
+            req([route.fullPath], onload);
         }
-        req(getDependencyFullPaths(route), mainLoader);
+        req(getDependencyFullPaths(route), function() {
+            var deps, nameNoExtn, shim, shimValue;
+            shim = config.shim;
+            if (shim === undefined) {
+                mainLoader();
+            } else {
+                nameNoExtn = name.substring(0, name.lastIndexOf('.'));
+                shimValue = shim[nameNoExtn];
+                if (shimValue === undefined) {
+                    deps= [];
+                } else if (shimValue instanceof Array) {
+                    deps = shimValue;
+                } else if (shimValue.deps !== undefined) {
+                    deps = shimValue.deps;
+                } else {
+                    deps= [];
+                }
+                req(deps, function() {
+                    mainLoader();
+                });
+            }
+        });
       }
      
       require = {
