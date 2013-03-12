@@ -7,4 +7,6 @@
 .cache
 .classpath
 .project
+logs
+bin
 

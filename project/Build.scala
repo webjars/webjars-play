@@ -23,7 +23,8 @@ object BuildSettings {
       "org.specs2" %% "specs2" % "1.14" % "test",
       "play" %% "play-test" % "2.1.0" % "test"),
     licenses := Seq("MIT License" -> url("http://opensource.org/licenses/MIT")),
-    homepage := Some(url("http://github.com/webjars/webjars-play")))
+    homepage := Some(url("http://github.com/webjars/webjars-play")),
+    unmanagedResourceDirectories in Compile <+= baseDirectory { _ / "conf" / "resources" })
 
   val sonatypeSettings = Seq(
     publishMavenStyle := true,
