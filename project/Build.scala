@@ -6,20 +6,25 @@ object BuildSettings {
   val buildSettings = Defaults.defaultSettings ++ Seq(
     organization := "org.webjars",
     name := "webjars-play",
-    version := "2.1.0",
+    version := "2.1.0-1-SNAPSHOT",
     scalaVersion := "2.10.0",
     autoScalaLibrary := false,
     crossPaths := false,
     resolvers += "Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases",
+    resolvers += "Local Maven" at Path.userHome.asFile.toURI.toURL + ".m2/repository",
     libraryDependencies ++= Seq(
       "org.scala-lang" % "scala-library" % "2.10.0" % "provided",
       "play" %% "play" % "2.1.0" % "provided",
+      "javax.servlet" % "javax.servlet-api" % "3.0.1" % "provided",
       "org.reflections" % "reflections" % "0.9.8",
-      "javax.servlet" % "javax.servlet-api" % "3.0.1" % "provided"
-    ),
+      "org.webjars" % "requirejs" % "2.1.1",
+      "org.webjars" % "webjars-locator" % "0.3-SNAPSHOT",
+      "junit" % "junit" % "4.11" % "test",
+      "org.specs2" %% "specs2" % "1.14" % "test",
+      "play" %% "play-test" % "2.1.0" % "test"),
     licenses := Seq("MIT License" -> url("http://opensource.org/licenses/MIT")),
-    homepage := Some(url("http://github.com/webjars/webjars-play"))
-  )
+    homepage := Some(url("http://github.com/webjars/webjars-play")),
+    unmanagedResourceDirectories in Compile <+= baseDirectory { _ / "conf" / "resources" })
 
   val sonatypeSettings = Seq(
     publishMavenStyle := true,
@@ -27,9 +32,9 @@ object BuildSettings {
     pomIncludeRepository := { _ => false },
     publishTo <<= version { (v: String) =>
       val nexus = "https://oss.sonatype.org/"
-      if (v.trim.endsWith("SNAPSHOT")) 
-        Some("snapshots" at nexus + "content/repositories/snapshots") 
-      else 
+      if (v.trim.endsWith("SNAPSHOT"))
+        Some("snapshots" at nexus + "content/repositories/snapshots")
+      else
         Some("releases" at nexus + "service/local/staging/deploy/maven2")
     },
     credentials += Credentials(Path.userHome / ".ivy2" / ".credentials"),
@@ -50,9 +55,7 @@ object BuildSettings {
         <groupId>org.sonatype.oss</groupId>
         <artifactId>oss-parent</artifactId>
         <version>7</version>
-      </parent>
-    )
-  )
+      </parent>))
 }
 
 object WebJarsPlayBuild extends Build {
@@ -61,6 +64,5 @@ object WebJarsPlayBuild extends Build {
   lazy val root = Project(
     "webjars-play",
     file("."),
-    settings = buildSettings ++ sonatypeSettings ++ Seq()
-  )
+    settings = buildSettings ++ sonatypeSettings ++ Seq())
 }

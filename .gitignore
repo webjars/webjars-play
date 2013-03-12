@@ -4,3 +4,9 @@
 /.idea_modules
 /project/project
 /project/target/
+.cache
+.classpath
+.project
+logs
+bin
+
