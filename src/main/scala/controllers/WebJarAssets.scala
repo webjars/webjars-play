@@ -66,7 +66,10 @@ class WebJarAssets extends Controller with RequirejsProducer {
    * located using the "webjars!" loader plugin convention.
    */
   def requirejs = Action {
-    Ok(produce(webJarAssetLocator.getFullPathIndex.asScala.mapValues { webJarPath =>
+    Ok(produce(webJarAssetLocator.getFullPathIndex.asScala.filter { pair =>
+      pair._2.lengthCompare(WebJarAssetLocator.WEBJARS_PATH_PREFIX.length) > 0 &&
+        pair._2.startsWith(WebJarAssetLocator.WEBJARS_PATH_PREFIX)
+    }.mapValues { webJarPath =>
       val relWebJarPath = webJarPath.stripPrefix(WebJarAssetLocator.WEBJARS_PATH_PREFIX)
       val assetPath = webJarPathPrefix + relWebJarPath
       val requireJsConfigPath = webJarPathPrefix + requirejsConfigPath(relWebJarPath)
