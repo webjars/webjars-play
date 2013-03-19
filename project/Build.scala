@@ -6,7 +6,7 @@ object BuildSettings {
   val buildSettings = Defaults.defaultSettings ++ Seq(
     organization := "org.webjars",
     name := "webjars-play",
-    version := "2.1.0-1-SNAPSHOT",
+    version := "2.1.0-1",
     scalaVersion := "2.10.0",
     autoScalaLibrary := false,
     crossPaths := false,
@@ -18,7 +18,7 @@ object BuildSettings {
       "javax.servlet" % "javax.servlet-api" % "3.0.1" % "provided",
       "org.reflections" % "reflections" % "0.9.8",
       "org.webjars" % "requirejs" % "2.1.1",
-      "org.webjars" % "webjars-locator" % "0.3-SNAPSHOT",
+      "org.webjars" % "webjars-locator" % "0.3",
       "junit" % "junit" % "4.11" % "test",
       "org.specs2" %% "specs2" % "1.14" % "test",
       "play" %% "play-test" % "2.1.0" % "test"),
