@@ -41,3 +41,12 @@ To enable JavaScript WebJar loading declare require.js in a familiar way:
 You're all set - no Play views required!
 
 An example of the require.js support can be found in the [angular-seed-play project](https://github.com/huntc/angular-seed-play).
+
+
+Releasing webjars-play
+----------------------
+
+1. Set the release version in `project/Build.scala`
+2. Commit
+3. Tag git `v2.x.y-z`
+4. Release: `sbt publish`
