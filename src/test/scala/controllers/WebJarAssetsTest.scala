@@ -11,7 +11,7 @@ import play.api.http.ContentTypes._
 @RunWith(classOf[JUnitRunner])
 class WebJarAssetsTest extends Specification {
 
-  val RequireJsRoute = """{"require.js/2.1.1/requirejs/webjars/resources/META-INF":{"fullPath":"/webjars/requirejs/2.1.1/require.js","dependencies":["/webjars/requirejs/2.1.1/webjars-requirejs.js"]}}"""
+  val RequireJsRoute = """{"require.js/2.1.5/requirejs/webjars/resources/META-INF":{"fullPath":"/webjars/requirejs/2.1.5/require.js","dependencies":["/webjars/requirejs/2.1.5/webjars-requirejs.js"]}}"""
 
   object TestController extends WebJarAssets
 

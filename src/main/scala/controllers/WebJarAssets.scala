@@ -4,15 +4,10 @@ import org.webjars.services.{ RequirejsProducer }
 import play.api.mvc.Controller
 import play.api.mvc.Action
 import play.api.mvc.AnyContent
-import play.Application
-import play.Configuration
 import play.api.Play.current
 import scala.util.matching.Regex
 import play.api.Play
 import scala.collection.JavaConverters._
-import org.apache.commons.lang.StringUtils
-import java.util.Arrays
-import scala.collection.immutable.TreeMap
 import org.webjars.WebJarAssetLocator
 import org.webjars.services.Route
 
