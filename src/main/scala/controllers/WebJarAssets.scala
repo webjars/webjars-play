@@ -24,21 +24,24 @@ import org.webjars.services.Route
  * files that should be looked for when searching within webjars. By default
  * all files are searched for.
  * <p>org.webjars.play.webJarPathPrefix specifies where WebJar resources are
- * loaded from. /webjars is the default.
+ * loaded from. 'webjars' is the default.
  */
 class WebJarAssets extends Controller with RequirejsProducer {
 
+  val AppContextDefault = "/"
+  val AppContextProp = "application.context"
   val WebjarFilterExprDefault = """.*"""
   val WebjarFilterExprProp = "org.webjars.play.webJarFilterExpr"
-  val WebjarPathPrefixDefault = "/webjars"
+  val WebjarPathPrefixDefault = "webjars"
   val WebjarPathPrefixProp = "org.webjars.play.webJarPathPrefix"
 
   val WebjarRequireJsConfigFile = "/webjars-requirejs.js"
 
   val webJarFilterExpr = current.configuration.getString(WebjarFilterExprProp)
     .getOrElse(WebjarFilterExprDefault)
-  val webJarPathPrefix = current.configuration.getString(WebjarPathPrefixProp)
-    .getOrElse(WebjarPathPrefixDefault)
+  val webJarPathPrefix =
+    current.configuration.getString(AppContextProp).getOrElse(AppContextDefault) +
+    current.configuration.getString(WebjarPathPrefixProp).getOrElse(WebjarPathPrefixDefault)
 
   val webJarAssetLocator = new WebJarAssetLocator(
     WebJarAssetLocator.getFullPathIndex(
