@@ -6,14 +6,43 @@ import org.specs2.runner.JUnitRunner
 import play.api.test.WithApplication
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import play.api.http.ContentTypes._
+import play.api.mvc.{AnyContent, Action}
 
 @RunWith(classOf[JUnitRunner])
 class WebJarAssetsTest extends Specification {
 
+  val RequireJsFile = "require.js"
+  val RequireJsLocation = "requirejs/2.1.5/require.js"
   val RequireJsRoute = """{"require.js/2.1.5/requirejs/webjars/resources/META-INF":{"fullPath":"/webjars/requirejs/2.1.5/require.js","dependencies":["/webjars/requirejs/2.1.5/webjars-requirejs.js"]}}"""
+  val SomeRequireJsAssetBody = "some body"
 
-  object TestController extends WebJarAssets
+  object TestController extends WebJarAssets(new AssetsBuilder() {
+    override def at(path: String, file: String): Action[AnyContent] = Action {
+      request =>
+        Ok(SomeRequireJsAssetBody)
+    }
+  })
+
+  "The at method" should {
+    "produce requirejs " in new WithApplication() {
+      val result = TestController.at(RequireJsRoute)(FakeRequest())
+      contentAsString(result) must_== SomeRequireJsAssetBody
+    }
+  }
+
+  "The locate method" should {
+    "locate requirejs" in new WithApplication() {
+      val locatedFile = TestController.locate(RequireJsFile)
+      locatedFile must_== RequireJsLocation
+    }
+  }
+
+  "The at method when locating" should {
+    "produce requirejs" in new WithApplication() {
+      val result = TestController.at(RequireJsFile, locate = true)(FakeRequest())
+      contentAsString(result) must_== SomeRequireJsAssetBody
+    }
+  }
 
   "The requirejs method" should {
     "produce the JS with the routes for requirejs" in new WithApplication() {
