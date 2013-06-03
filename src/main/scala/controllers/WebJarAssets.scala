@@ -55,9 +55,8 @@ class WebJarAssets(assetsBuilder: AssetsBuilder) extends Controller with Require
   /**
    * Returns the contents of a WebJar asset
    */
-  def at(file: String, locate: Boolean = false): Action[AnyContent] = {
-    val locatedFile = if (locate) this.locate(file) else file
-    assetsBuilder.at("/" + WebJarAssetLocator.WEBJARS_PATH_PREFIX, locatedFile)
+  def at(file: String): Action[AnyContent] = {
+    assetsBuilder.at("/" + WebJarAssetLocator.WEBJARS_PATH_PREFIX, file)
   }
 
   /**
@@ -68,6 +67,13 @@ class WebJarAssets(assetsBuilder: AssetsBuilder) extends Controller with Require
    */
   def locate(file: String): String = {
     webJarAssetLocator.getFullPath(file).stripPrefix(WebJarAssetLocator.WEBJARS_PATH_PREFIX + "/")
+  }
+
+  /**
+   * A convenience method combining the calling locate() and then at()
+   */
+  def retrieve(file: String): Action[AnyContent] = {
+    at(locate(file))
   }
 
   /**

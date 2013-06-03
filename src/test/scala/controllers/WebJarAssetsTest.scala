@@ -25,7 +25,7 @@ class WebJarAssetsTest extends Specification {
 
   "The at method" should {
     "produce requirejs " in new WithApplication() {
-      val result = TestController.at(RequireJsRoute)(FakeRequest())
+      val result = TestController.at(RequireJsLocation)(FakeRequest())
       contentAsString(result) must_== SomeRequireJsAssetBody
     }
   }
@@ -39,7 +39,7 @@ class WebJarAssetsTest extends Specification {
 
   "The at method when locating" should {
     "produce requirejs" in new WithApplication() {
-      val result = TestController.at(RequireJsFile, locate = true)(FakeRequest())
+      val result = TestController.retrieve(RequireJsFile)(FakeRequest())
       contentAsString(result) must_== SomeRequireJsAssetBody
     }
   }
