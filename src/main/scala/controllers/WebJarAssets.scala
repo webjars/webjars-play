@@ -70,13 +70,6 @@ class WebJarAssets(assetsBuilder: AssetsBuilder) extends Controller with Require
   }
 
   /**
-   * A convenience method combining the calling locate() and then at()
-   */
-  def retrieve(file: String): Action[AnyContent] = {
-    at(locate(file))
-  }
-
-  /**
    * Return the bootstrapping required for require.js so that assets can be
    * located using the "webjars!" loader plugin convention.
    */
