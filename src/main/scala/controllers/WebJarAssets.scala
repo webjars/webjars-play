@@ -21,7 +21,7 @@ import org.webjars.services.Route
  * <p>org.webjars.play.webJarPathPrefix specifies where WebJar resources are
  * loaded from. 'webjars' is the default.
  */
-class WebJarAssets extends Controller with RequirejsProducer {
+class WebJarAssets(assetsBuilder: AssetsBuilder) extends Controller with RequirejsProducer {
 
   val AppContextDefault = "/"
   val AppContextProp = "application.context"
@@ -56,7 +56,7 @@ class WebJarAssets extends Controller with RequirejsProducer {
    * Returns the contents of a WebJar asset
    */
   def at(file: String): Action[AnyContent] = {
-    Assets.at("/" + WebJarAssetLocator.WEBJARS_PATH_PREFIX, file)
+    assetsBuilder.at("/" + WebJarAssetLocator.WEBJARS_PATH_PREFIX, file)
   }
 
   /**
@@ -95,4 +95,4 @@ class WebJarAssets extends Controller with RequirejsProducer {
   }
 }
 
-object WebJarAssets extends WebJarAssets
+object WebJarAssets extends WebJarAssets(Assets)
