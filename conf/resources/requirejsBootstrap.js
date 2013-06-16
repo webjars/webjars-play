@@ -3,7 +3,7 @@ var require;
 (function (routes) {
     "use strict";
 
-    var rjsReverseFullPath, script;
+    var origCallback, rjsReverseFullPath, script;
 
     function reversePath(n) {
         var comps, i, rn;
@@ -57,6 +57,7 @@ var require;
         function mainLoader() {
             req([route.fullPath], onload);
         }
+
         req(getDependencyFullPaths(route), function () {
             var deps, nameNoExtn, shim, shimValue;
             shim = config.shim;
@@ -81,12 +82,17 @@ var require;
         });
     }
 
-    require = {
-        callback: function () {
-            define("webjars", function () {
-                return {load: webjarLoader};
-            });
-        }
+    // Establish the requirejs configuration taking care of any configuration that has been declared.
+    if (require === undefined) {
+        require = {};
+    }
+
+    origCallback = require.callback;
+    require.callback = function () {
+        if (origCallback !== undefined) origCallback();
+        define("webjars", function () {
+            return {load: webjarLoader};
+        });
     };
 
     script = document.createElement("script");
