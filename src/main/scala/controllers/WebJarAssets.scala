@@ -31,35 +31,45 @@ class WebJarAssets(assetsBuilder: AssetsBuilder) extends Controller with Require
 
   val WebjarRequireJsConfigFile = "/webjars-requirejs.js"
   
-  def webJarFilterExpr(implicit current: play.api.Application) = current.configuration.getString(WebjarFilterExprProp)
+  private class ApplicationProxy(app: play.api.Application) {
+    val webJarFilterExpr = app.configuration.getString(WebjarFilterExprProp)
       .getOrElse(WebjarFilterExprDefault)
+    
+    val webJarPathPrefix =
+      app.configuration.getString(AppContextProp).getOrElse(AppContextDefault) +
+    app.configuration.getString(WebjarPathPrefixProp).getOrElse(WebjarPathPrefixDefault)
 
-  def webJarPathPrefix(implicit current: play.api.Application) =
-    current.configuration.getString(AppContextProp).getOrElse(AppContextDefault) +
-  current.configuration.getString(WebjarPathPrefixProp).getOrElse(WebjarPathPrefixDefault)
-
-  def webJarAssetLocator(implicit current: play.api.Application) = {
-    new WebJarAssetLocator(
-      WebJarAssetLocator.getFullPathIndex(
-        new Regex(webJarFilterExpr).pattern, Play.application.classloader))
-  }
-
-  def routes(implicit current: play.api.Application) = {
-    webJarAssetLocator.getFullPathIndex.asScala.filter { pair =>
+    val webJarAssetLocator = {
+      new WebJarAssetLocator(
+        WebJarAssetLocator.getFullPathIndex(
+          new Regex(webJarFilterExpr).pattern, app.classloader))
+    }
+    
+    def routes = {
+      webJarAssetLocator.getFullPathIndex.asScala.filter { pair =>
       pair._2.lengthCompare(WebJarAssetLocator.WEBJARS_PATH_PREFIX.length) > 0 &&
       pair._2.startsWith(WebJarAssetLocator.WEBJARS_PATH_PREFIX)
     }.mapValues { webJarPath =>
-      val relWebJarPath = webJarPath.stripPrefix(WebJarAssetLocator.WEBJARS_PATH_PREFIX)
-      val assetPath = webJarPathPrefix + relWebJarPath
-      val requireJsConfigPath = webJarPathPrefix + requirejsConfigPath(relWebJarPath)
-      Route(assetPath, List[String](requireJsConfigPath))
-    }.toMap
+        val relWebJarPath = webJarPath.stripPrefix(WebJarAssetLocator.WEBJARS_PATH_PREFIX)
+        val assetPath = webJarPathPrefix + relWebJarPath
+        val requireJsConfigPath = webJarPathPrefix + requirejsConfigPath(relWebJarPath)
+        Route(assetPath, List[String](requireJsConfigPath))
+      }.toMap
+    }
+
+    def locate(file: String): String = {
+      webJarAssetLocator.getFullPath(file).stripPrefix(WebJarAssetLocator.WEBJARS_PATH_PREFIX + "/")
+    }
+  }
+
+  def routes(implicit current: play.api.Application) = {
+    new ApplicationProxy(current).routes
   }
 
   /**
    * Returns the contents of a WebJar asset
    */
-   def at(file: String)(implicit current: play.api.Application): Action[AnyContent] = {
+   def at(file: String): Action[AnyContent] = {
     assetsBuilder.at("/" + WebJarAssetLocator.WEBJARS_PATH_PREFIX, file)
   }
 
@@ -70,7 +80,7 @@ class WebJarAssets(assetsBuilder: AssetsBuilder) extends Controller with Require
    *
    */
   def locate(file: String)(implicit current: play.api.Application): String = {
-    webJarAssetLocator.getFullPath(file).stripPrefix(WebJarAssetLocator.WEBJARS_PATH_PREFIX + "/")
+    new ApplicationProxy(current).locate(file)
   }
 
   /**
