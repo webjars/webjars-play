@@ -7,11 +7,11 @@ object BuildSettings {
     organization := "org.webjars",
     name := "webjars-play",
     scalaVersion := "2.10.0",
-    version := "2.1.0-4-SNAPSHOT",
+    version := "2.2.0-SNAPSHOT",
     resolvers += "Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases",
     resolvers += "Local Maven" at Path.userHome.asFile.toURI.toURL + ".m2/repository",
     libraryDependencies ++= Seq(
-      "play" %% "play" % "[2.1.0,2.1.2]",
+      "com.typesafe.play" %% "play" % "(2.1,2.3)" % "provided",
       "org.webjars" % "requirejs" % "2.1.5",
       "org.webjars" % "webjars-locator" % "0.5",
       "junit" % "junit" % "4.11" % "test",
