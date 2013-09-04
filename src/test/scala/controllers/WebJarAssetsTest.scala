@@ -12,8 +12,8 @@ import play.api.mvc.{AnyContent, Action}
 class WebJarAssetsTest extends Specification {
 
   val RequireJsFile = "require.js"
-  val RequireJsLocation = "requirejs/2.1.5/require.js"
-  val RequireJsRoute = """{"require.js/2.1.5/requirejs/webjars/resources/META-INF":{"fullPath":"/webjars/requirejs/2.1.5/require.js","dependencies":["/webjars/requirejs/2.1.5/webjars-requirejs.js"]}}"""
+  val RequireJsLocation = "requirejs/2.1.8/require.js"
+  val RequireJsRoute = """{"require.js/2.1.8/requirejs/webjars/resources/META-INF":{"fullPath":"/webjars/requirejs/2.1.8/require.js","dependencies":["/webjars/requirejs/2.1.8/webjars-requirejs.js"]},"require.min.js/2.1.8/requirejs/webjars/resources/META-INF":{"fullPath":"/webjars/requirejs/2.1.8/require.min.js","dependencies":["/webjars/requirejs/2.1.8/webjars-requirejs.js"]}}"""
   val SomeRequireJsAssetBody = "some body"
 
   object TestController extends WebJarAssets(new AssetsBuilder() {
