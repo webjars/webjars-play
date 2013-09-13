@@ -49,4 +49,4 @@ Releasing webjars-play
 1. Set the release version in `project/Build.scala`
 2. Commit
 3. Tag git `v2.x.y-z`
-4. Release: `sbt publish`
+4. Release: `sbt publish-signed`
