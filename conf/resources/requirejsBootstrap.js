@@ -96,7 +96,6 @@ var require;
     };
 
     script = document.createElement("script");
-    script.setAttribute("type", "text/javascript");
     rjsReverseFullPath = getReverseFullPath("require.js");
     script.setAttribute("src", routes[rjsReverseFullPath].fullPath);
     document.getElementsByTagName("head")[0].appendChild(script);
