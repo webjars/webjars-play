@@ -15,7 +15,7 @@ object BuildSettings {
       "org.webjars" % "requirejs" % "2.1.8",
       "org.webjars" % "webjars-locator" % "0.5",
       "junit" % "junit" % "4.11" % "test",
-      "org.specs2" %% "specs2" % "1.14" % "test",
+      "org.specs2" %% "specs2" % "2.3.3" % "test",
       "com.typesafe.play" %% "play-test" % "2.2.1" % "test"),
     licenses := Seq("MIT License" -> url("http://opensource.org/licenses/MIT")),
     homepage := Some(url("http://github.com/webjars/webjars-play")),
