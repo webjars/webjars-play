@@ -6,17 +6,17 @@ object BuildSettings {
   val buildSettings = Defaults.defaultSettings ++ Seq(
     organization := "org.webjars",
     name := "webjars-play",
-    scalaVersion := "2.10.2",
-    version := "2.2.0",
+    scalaVersion := "2.10.3",
+    version := "2.2.1",
     resolvers += "Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases",
     resolvers += "Local Maven" at Path.userHome.asFile.toURI.toURL + ".m2/repository",
     libraryDependencies ++= Seq(
-      "com.typesafe.play" %% "play" % "2.2.0" % "provided",
+      "com.typesafe.play" %% "play" % "2.2.1" % "provided",
       "org.webjars" % "requirejs" % "2.1.8",
       "org.webjars" % "webjars-locator" % "0.5",
       "junit" % "junit" % "4.11" % "test",
       "org.specs2" %% "specs2" % "1.14" % "test",
-      "com.typesafe.play" %% "play-test" % "2.2.0-RC1" % "test"),
+      "com.typesafe.play" %% "play-test" % "2.2.1" % "test"),
     licenses := Seq("MIT License" -> url("http://opensource.org/licenses/MIT")),
     homepage := Some(url("http://github.com/webjars/webjars-play")),
     unmanagedResourceDirectories in Compile <+= baseDirectory { _ / "conf" / "resources" })
