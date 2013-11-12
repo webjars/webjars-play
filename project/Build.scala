@@ -13,7 +13,7 @@ object BuildSettings {
     libraryDependencies ++= Seq(
       "com.typesafe.play" %% "play" % "2.2.1" % "provided",
       "org.webjars" % "requirejs" % "2.1.8",
-      "org.webjars" % "webjars-locator" % "0.5",
+      "org.webjars" % "webjars-locator" % "0.6",
       "junit" % "junit" % "4.11" % "test",
       "org.specs2" %% "specs2" % "2.3.3" % "test",
       "com.typesafe.play" %% "play-test" % "2.2.1" % "test"),
