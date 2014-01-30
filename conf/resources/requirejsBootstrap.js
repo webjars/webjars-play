@@ -1,9 +1,8 @@
 /*global define, document */
-var require;
 (function (routes) {
     "use strict";
 
-    var origCallback, rjsReverseFullPath, script;
+    var rjsReverseFullPath, script, head, done = false;
 
     function reversePath(n) {
         var comps, i, rn;
@@ -43,60 +42,76 @@ var require;
         return dependencyFullPaths;
     }
 
-    // Load a module's dependencies that we know about, and then any that
-    // are declared via the dependencies coming in, and then the module
-    // itself.
-    function webjarLoader(name, req, onload, config) {
-        var route, routeKey;
-        routeKey = getReverseFullPath(name);
-        route = routes[routeKey];
-        if (route === undefined) {
-            throw "No WebJar dependency found for " + name +
-                ". Please ensure that this is a valid dependency";
-        }
-        function mainLoader() {
-            req([route.fullPath], onload);
-        }
+    var plugin = {
+        /**
+         * Load a module's dependencies that we know about, and then any that are declared via the
+         * dependencies coming in, and then the module itself.
+         *
+         * @param name The name of the resource to load
+         * @param req interface of requirejs
+         * @param onload A function to call with the value for name. This tells the loader that the
+         *               plugin is done loading the resource.
+         * @param config requirejs configuration object
+         */
+        load: function webjarLoader(name, req, onload, config) {
+            var route, routeKey;
+            routeKey = getReverseFullPath(name);
+            route = routes[routeKey];
 
-        req(getDependencyFullPaths(route), function () {
-            var deps, nameNoExtn, shim, shimValue;
-            shim = config.shim;
-            if (shim === undefined) {
-                mainLoader();
-            } else {
-                nameNoExtn = name.substring(0, name.lastIndexOf('.'));
-                shimValue = shim[nameNoExtn];
-                if (shimValue === undefined) {
-                    deps = [];
-                } else if (shimValue instanceof Array) {
-                    deps = shimValue;
-                } else if (shimValue.deps !== undefined) {
-                    deps = shimValue.deps;
-                } else {
-                    deps = [];
-                }
-                req(deps, function () {
-                    mainLoader();
-                });
+            if (route === undefined) {
+                throw "No WebJar dependency found for " + name +
+                    ". Please ensure that this is a valid dependency";
             }
-        });
-    }
 
-    // Establish the requirejs configuration taking care of any configuration that has been declared.
-    if (require === undefined) {
-        require = {};
-    }
+            function mainLoader() {
+                req([route.fullPath], onload);
+            }
 
-    origCallback = require.callback;
-    require.callback = function () {
-        if (origCallback !== undefined) origCallback();
-        define("webjars", function () {
-            return {load: webjarLoader};
-        });
+            req(getDependencyFullPaths(route), function () {
+                var deps, nameNoExtn, shim, shimValue;
+                shim = config.shim;
+                if (shim === undefined) {
+                    mainLoader();
+                } else {
+                    nameNoExtn = name.substring(0, name.lastIndexOf('.'));
+                    shimValue = shim[nameNoExtn];
+                    if (shimValue === undefined) {
+                        deps = [];
+                    } else if (shimValue instanceof Array) {
+                        deps = shimValue;
+                    } else if (shimValue.deps !== undefined) {
+                        deps = shimValue.deps;
+                    } else {
+                        deps = [];
+                    }
+                    req(deps, function () {
+                        mainLoader();
+                    });
+                }
+            });
+        }
     };
 
-    script = document.createElement("script");
     rjsReverseFullPath = getReverseFullPath("require.js");
+
+    script = document.createElement("script");
+    script.setAttribute("type", "application/javascript");
     script.setAttribute("src", routes[rjsReverseFullPath].fullPath);
-    document.getElementsByTagName("head")[0].appendChild(script);
+
+    head = document.getElementsByTagName("head")[0];
+
+    script.onload = script.onreadystatechange = function () {
+        if (!done && (!this.readyState || this.readyState === "loaded" || this.readyState === "complete")) {
+            done = true;
+
+            define("webjars", plugin);
+
+            script.onload = script.onreadystatechange = null;
+            if (head && script.parentNode) {
+                head.removeChild(script);
+            }
+        }
+    };
+
+    head.appendChild(script);
 }(["routes"]));
