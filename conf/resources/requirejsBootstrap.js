@@ -48,12 +48,26 @@ var require;
     // itself.
     function webjarLoader(name, req, onload, config) {
         var route, routeKey;
-        routeKey = getReverseFullPath(name);
+
+        function prependSlash(n) {
+            return (n.substring(0, 1) === "/" ? n : "/" + n);
+        }
+
+        function appendJs(n) {
+            var dotPosn = n.lastIndexOf(".");
+            if (dotPosn > -1 && dotPosn > n.lastIndexOf("/")) {
+                return n;
+            }
+            return n + ".js";
+        }
+
+        routeKey = getReverseFullPath(appendJs(prependSlash(name)));
         route = routes[routeKey];
         if (route === undefined) {
             throw "No WebJar dependency found for " + name +
                 ". Please ensure that this is a valid dependency";
         }
+
         function mainLoader() {
             req([route.fullPath], onload);
         }
@@ -89,7 +103,9 @@ var require;
 
     origCallback = require.callback;
     require.callback = function () {
-        if (origCallback !== undefined) origCallback();
+        if (origCallback !== undefined) {
+            origCallback();
+        }
         define("webjars", function () {
             return {load: webjarLoader};
         });
