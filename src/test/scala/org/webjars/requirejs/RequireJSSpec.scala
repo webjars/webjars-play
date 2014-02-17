@@ -11,8 +11,8 @@ class RequireJSSpec extends PlaySpecification {
       val javaScript =  org.webjars.play.RequireJS.setup("js/app")
 
       javaScript must contain("return '/webjars/' + webjarid")
-      javaScript must contain("'requirejs': '2.1.8'")
-      javaScript must contain("""<script data-main="/assets/js/app" src="/webjars/requirejs/2.1.8/require.min.js"></script>""")
+      javaScript must contain("'requirejs': '2.1.10'")
+      javaScript must contain("""<script data-main="/assets/js/app" src="/webjars/requirejs/2.1.10/require.min.js"></script>""")
     }
   }
 
