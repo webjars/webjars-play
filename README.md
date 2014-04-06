@@ -46,7 +46,7 @@ An example of the require.js support can be found in the [angular-seed-play proj
 Releasing webjars-play
 ----------------------
 
-1. Set the release version in `project/Build.scala`
+1. Set the release version in `build.sbt`
 2. Commit
 3. Tag git `v2.x.y-z`
 4. Release: `sbt publish-signed`

@@ -4,7 +4,7 @@ name := "webjars-play"
 
 scalaVersion := "2.10.3"
 
-version := "2.2.2-SNAPSHOT"
+version := "2.2.2"
 
 javacOptions ++= Seq("-source", "1.6", "-target", "1.6")
 
