@@ -18,8 +18,8 @@ object WebJarAssetsSpec extends PlaySpecification {
       contentAsString(result) must contain("RequireJS 2.1.10")
     }
     "be able to locate an asset with a webjar specified" in new WithApplication {
-      val requireJsPath = WebJarAssets.locate("requirejs", "require.js")
-      requireJsPath must equalTo("requirejs/2.1.10/require.js")
+      val requireJsPath = WebJarAssets.locate("bootswatch-yeti", "bootstrap.min.css")
+      requireJsPath must equalTo("bootswatch-yeti/3.1.1/css/bootstrap.min.css")
     }
   }
 

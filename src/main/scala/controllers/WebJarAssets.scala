@@ -58,7 +58,7 @@ class WebJarAssets(assetsBuilder: AssetsBuilder) extends Controller {
    *
    */
   def locate(webjar: String, file: String): String = {
-    webJarAssetLocator.getFullPath(file).stripPrefix(WebJarAssetLocator.WEBJARS_PATH_PREFIX + "/")
+    webJarAssetLocator.getFullPath(webjar, file).stripPrefix(WebJarAssetLocator.WEBJARS_PATH_PREFIX + "/")
   }
 
 }
