@@ -4,7 +4,7 @@ name := "webjars-play"
 
 scalaVersion := "2.10.3"
 
-version := "2.2.2-1"
+version := "2.3-M1"
 
 javacOptions ++= Seq("-source", "1.6", "-target", "1.6")
 
@@ -13,11 +13,11 @@ resolvers += "Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases"
 resolvers += "Local Maven" at Path.userHome.asFile.toURI.toURL + ".m2/repository"
 
 libraryDependencies ++= Seq(
-  "com.typesafe.play" %% "play" % "2.2.2" % "provided",
+  "com.typesafe.play" %% "play" % "2.3-M1" % "provided",
   "org.webjars" % "requirejs" % "2.1.10",
   "org.webjars" % "webjars-locator" % "0.13",
   "org.specs2" %% "specs2" % "2.3.3" % "test",
-  "com.typesafe.play" %% "play-test" % "2.2.2" % "test",
+  "com.typesafe.play" %% "play-test" % "2.3-M1" % "test",
   "org.webjars" % "bootstrap" % "3.1.0" % "test",
   "org.webjars" % "bootswatch-yeti" % "3.1.1" % "test")
 
