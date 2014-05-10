@@ -4,6 +4,8 @@ name := "webjars-play"
 
 scalaVersion := "2.10.3"
 
+crossScalaVersions := Seq("2.10.3", "2.11.0")
+
 version := "2.3.0-RC1-1-SNAPSHOT"
 
 javacOptions ++= Seq("-source", "1.6", "-target", "1.6")
@@ -16,7 +18,7 @@ libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play" % "2.3.0-RC1" % "provided",
   "org.webjars" % "requirejs" % "2.1.10",
   "org.webjars" % "webjars-locator" % "0.14",
-  "org.specs2" %% "specs2" % "2.3.3" % "test",
+  "org.specs2" %% "specs2" % "2.3.11" % "test",
   "com.typesafe.play" %% "play-test" % "2.3.0-RC1" % "test",
   "org.webjars" % "bootstrap" % "3.1.0" % "test",
   "org.webjars" % "bootswatch-yeti" % "3.1.1" % "test")
