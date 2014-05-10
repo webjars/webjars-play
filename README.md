@@ -49,4 +49,6 @@ Releasing webjars-play
 1. Set the release version in `build.sbt`
 2. Commit
 3. Tag git `v2.x.y-z`
-4. Release: `sbt publish-signed`
+4. Push tags
+5. Release: `sbt publish-signed`
+6. Add `-SNAPSHOT` back to `build.sbt` version
