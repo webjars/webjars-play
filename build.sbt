@@ -6,7 +6,7 @@ scalaVersion := "2.10.3"
 
 crossScalaVersions := Seq("2.10.3", "2.11.0")
 
-version := "2.3.0-RC1-2-SNAPSHOT"
+version := "2.3.0"
 
 javacOptions ++= Seq("-source", "1.6", "-target", "1.6")
 
@@ -15,11 +15,11 @@ resolvers += "Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases"
 resolvers += "Local Maven" at Path.userHome.asFile.toURI.toURL + ".m2/repository"
 
 libraryDependencies ++= Seq(
-  "com.typesafe.play" %% "play" % "2.3.0-RC1" % "provided",
+  "com.typesafe.play" %% "play" % "2.3.0" % "provided",
   "org.webjars" % "requirejs" % "2.1.10",
   "org.webjars" % "webjars-locator" % "0.14",
   "org.specs2" %% "specs2" % "2.3.11" % "test",
-  "com.typesafe.play" %% "play-test" % "2.3.0-RC1" % "test",
+  "com.typesafe.play" %% "play-test" % "2.3.0" % "test",
   "org.webjars" % "bootstrap" % "3.1.0" % "test",
   "org.webjars" % "bootswatch-yeti" % "3.1.1" % "test")
 
