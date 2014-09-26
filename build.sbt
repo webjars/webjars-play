@@ -17,7 +17,7 @@ resolvers += "Local Maven" at Path.userHome.asFile.toURI.toURL + ".m2/repository
 libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play" % "2.3.0" % "provided",
   "org.webjars" % "requirejs" % "2.1.10",
-  "org.webjars" % "webjars-locator" % "0.18",
+  "org.webjars" % "webjars-locator" % "0.19",
   "org.specs2" %% "specs2" % "2.3.11" % "test",
   "com.typesafe.play" %% "play-test" % "2.3.0" % "test",
   "org.webjars" % "bootstrap" % "3.1.0" % "test",
