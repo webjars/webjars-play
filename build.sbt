@@ -21,6 +21,7 @@ libraryDependencies ++= Seq(
   "org.specs2" %% "specs2" % "2.3.11" % "test",
   "com.typesafe.play" %% "play-test" % "2.3.0" % "test",
   "org.webjars" % "bootstrap" % "3.1.0" % "test",
+  "org.webjars" % "react" % "0.12.2" % "test",
   "org.webjars" % "bootswatch-yeti" % "3.1.1" % "test")
 
 licenses := Seq("MIT License" -> url("http://opensource.org/licenses/MIT"))

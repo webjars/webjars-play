@@ -61,6 +61,21 @@ class WebJarAssets(assetsBuilder: AssetsBuilder) extends Controller {
     webJarAssetLocator.getFullPath(webjar, file).stripPrefix(WebJarAssetLocator.WEBJARS_PATH_PREFIX + "/")
   }
 
+  /**
+   * Get the full path to a file in a WebJar without validating that the file actually exists
+   *
+   * @example Calling fullPath("react", "react.js") will return the full path to the file in the WebJar because react.js exists at the root of the WebJar
+   *
+   * @param webjar the WebJar artifactId
+   * @param path the full path to a file in the WebJar
+   * @return the path to the file (sans-the webjars prefix)
+   *
+   */
+  def fullPath(webjar: String, path: String): String = {
+    val version = webJarAssetLocator.getWebJars.get(webjar)
+    s"$webjar/$version/$path"
+  }
+
 }
 
 object WebJarAssets extends WebJarAssets(Assets)
