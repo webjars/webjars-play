@@ -6,7 +6,7 @@ scalaVersion := "2.10.3"
 
 crossScalaVersions := Seq("2.10.3", "2.11.5")
 
-version := "2.3.0-3-SNAPSHOT"
+version := "2.3.0-3"
 
 javacOptions ++= Seq("-source", "1.6", "-target", "1.6")
 
