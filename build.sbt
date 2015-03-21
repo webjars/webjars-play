@@ -2,11 +2,11 @@ organization := "org.webjars"
 
 name := "webjars-play"
 
-scalaVersion := "2.10.3"
+scalaVersion := "2.11.5"
 
 crossScalaVersions := Seq("2.10.3", "2.11.5")
 
-version := "2.3.0-4-SNAPSHOT"
+version := "2.4.0-SNAPSHOT"
 
 javacOptions ++= Seq("-source", "1.6", "-target", "1.6")
 
@@ -15,14 +15,14 @@ resolvers += "Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases"
 resolvers += "Local Maven" at Path.userHome.asFile.toURI.toURL + ".m2/repository"
 
 libraryDependencies ++= Seq(
-  "com.typesafe.play" %% "play" % "2.3.0" % "provided",
-  "org.webjars" % "requirejs" % "2.1.10",
+  "com.typesafe.play" %% "play" % "2.4.0-M3" % "provided",
+  "org.webjars" % "requirejs" % "2.1.16",
   "org.webjars" % "webjars-locator" % "0.19",
   "org.specs2" %% "specs2" % "2.3.11" % "test",
   "com.typesafe.play" %% "play-test" % "2.3.0" % "test",
-  "org.webjars" % "bootstrap" % "3.1.0" % "test",
-  "org.webjars" % "react" % "0.12.2" % "test",
-  "org.webjars" % "bootswatch-yeti" % "3.1.1" % "test")
+  "org.webjars" % "bootstrap" % "3.3.4" % "test",
+  "org.webjars" % "react" % "0.13.0" % "test",
+  "org.webjars" % "bootswatch-yeti" % "3.3.1+2" % "test")
 
 licenses := Seq("MIT License" -> url("http://opensource.org/licenses/MIT"))
 
