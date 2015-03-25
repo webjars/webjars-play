@@ -6,21 +6,16 @@ scalaVersion := "2.10.3"
 
 crossScalaVersions := Seq("2.10.3", "2.11.5")
 
-version := "2.4.0-M2-1-SNAPSHOT"
+version := "2.4.0-M3-SNAPSHOT"
 
 javacOptions ++= Seq("-source", "1.6", "-target", "1.6")
 
-resolvers += "Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases"
-
-resolvers += "Local Maven" at Path.userHome.asFile.toURI.toURL + ".m2/repository"
-
-resolvers += "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases"
-
 libraryDependencies ++= Seq(
-  "com.typesafe.play" %% "play" % "2.4.0-M2" % "provided",
+  "com.typesafe.play" %% "play" % "2.4.0-M3" % "provided",
   "org.webjars" % "requirejs" % "2.1.15",
-  "org.webjars" % "webjars-locator" % "0.19",
-  "com.typesafe.play" %% "play-test" % "2.4.0-M2" % "test",
+  "org.webjars" % "webjars-locator" % "0.21",
+  "com.typesafe.play" %% "play-test" % "2.4.0-M3" % "test",
+  "com.typesafe.play" %% "play-specs2" % "2.4.0-M3" % "test",
   "org.webjars" % "bootstrap" % "3.1.0" % "test",
   "org.webjars" % "react" % "0.12.2" % "test",
   "org.webjars" % "bootswatch-yeti" % "3.1.1" % "test")
