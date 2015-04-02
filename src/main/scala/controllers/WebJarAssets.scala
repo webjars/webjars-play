@@ -1,6 +1,6 @@
 package controllers
 
-import play.api.mvc.Controller
+import play.api.http.{LazyHttpErrorHandler, HttpErrorHandler}
 import play.api.mvc.Action
 import play.api.mvc.AnyContent
 import play.api.Play.current
@@ -9,13 +9,16 @@ import play.api.Play
 import scala.collection.JavaConverters._
 import org.webjars.WebJarAssetLocator
 
+import javax.inject.{ Inject, Singleton }
+
 /**
  * A Play framework controller that is able to resolve WebJar paths.
  * <p>org.webjars.play.webJarFilterExpr can be used to declare a regex for the
  * files that should be looked for when searching within WebJars. By default
  * all files are searched for.
  */
-class WebJarAssets(assetsBuilder: AssetsBuilder) extends Controller {
+@Singleton
+class WebJarAssets @Inject() (errorHandler: HttpErrorHandler) extends AssetsBuilder(errorHandler) {
 
   val WebjarFilterExprDefault = """.*"""
   val WebjarFilterExprProp = "org.webjars.play.webJarFilterExpr"
@@ -33,7 +36,7 @@ class WebJarAssets(assetsBuilder: AssetsBuilder) extends Controller {
    * @return the Action that serves the file
    */
   def at(file: String): Action[AnyContent] = {
-    assetsBuilder.at("/" + WebJarAssetLocator.WEBJARS_PATH_PREFIX, file)
+    this.at("/" + WebJarAssetLocator.WEBJARS_PATH_PREFIX, file)
   }
 
   /**
@@ -78,4 +81,4 @@ class WebJarAssets(assetsBuilder: AssetsBuilder) extends Controller {
 
 }
 
-object WebJarAssets extends WebJarAssets(Assets)
+object WebJarAssets extends WebJarAssets(LazyHttpErrorHandler)
