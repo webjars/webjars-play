@@ -2,13 +2,17 @@ organization := "org.webjars"
 
 name := "webjars-play"
 
-scalaVersion := "2.10.3"
+scalaVersion := "2.10.6"
 
-crossScalaVersions := Seq("2.10.3", "2.11.5")
+crossScalaVersions := Seq("2.10.3", "2.11.6")
 
-version := "2.4.0-RC2-SNAPSHOT"
+version := "2.4.0-RC1-1-SNAPSHOT"
 
 javacOptions ++= Seq("-source", "1.6", "-target", "1.6")
+
+enablePlugins(play.sbt.routes.RoutesCompiler)
+
+sources in (Test, play.sbt.routes.RoutesKeys.routes) ++= ((unmanagedResourceDirectories in Test).value * "routes").get
 
 resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
 
