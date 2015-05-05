@@ -12,7 +12,7 @@ class RequireJSSpec extends PlaySpecification {
 
       javaScript must contain("return ['/webjars/' + webJarId")
       javaScript must contain("\"requirejs\":\"2.1.15\"")
-      javaScript must contain("""<script data-main="/assets/js%2Fapp" src="/webjars/requirejs%2F2.1.15%2Frequire.min.js"></script>""")
+      javaScript must contain("""<script data-main="/assets/js/app" src="/webjars/requirejs/2.1.15/require.min.js"></script>""")
     }
   }
 
