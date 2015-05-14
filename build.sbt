@@ -2,22 +2,26 @@ organization := "org.webjars"
 
 name := "webjars-play"
 
-scalaVersion := "2.10.3"
+scalaVersion := "2.10.5"
 
-crossScalaVersions := Seq("2.10.3", "2.11.5")
+crossScalaVersions := Seq("2.10.5", "2.11.6")
 
 version := "2.4.0-RC2-SNAPSHOT"
 
-javacOptions ++= Seq("-source", "1.6", "-target", "1.6")
+javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
+
+enablePlugins(play.sbt.routes.RoutesCompiler)
+
+sources in (Test, play.sbt.routes.RoutesKeys.routes) ++= ((unmanagedResourceDirectories in Test).value * "routes").get
 
 resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
 
 libraryDependencies ++= Seq(
-  "com.typesafe.play" %% "play" % "2.4.0-RC1" % "provided",
+  "com.typesafe.play" %% "play" % "2.4.0-RC2" % "provided",
   "org.webjars" % "requirejs" % "2.1.15",
-  "org.webjars" % "webjars-locator" % "0.21",
-  "com.typesafe.play" %% "play-test" % "2.4.0-RC1" % "test",
-  "com.typesafe.play" %% "play-specs2" % "2.4.0-RC1" % "test",
+  "org.webjars" % "webjars-locator" % "0.22",
+  "com.typesafe.play" %% "play-test" % "2.4.0-RC2" % "test",
+  "com.typesafe.play" %% "play-specs2" % "2.4.0-RC2" % "test",
   "org.webjars" % "bootstrap" % "3.1.0" % "test",
   "org.webjars" % "react" % "0.12.2" % "test",
   "org.webjars" % "bootswatch-yeti" % "3.1.1" % "test")
