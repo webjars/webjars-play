@@ -19,7 +19,7 @@ resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
 libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play" % "2.4.0-RC2" % "provided",
   "org.webjars" % "requirejs" % "2.1.15",
-  "org.webjars" % "webjars-locator" % "0.21",
+  "org.webjars" % "webjars-locator" % "0.22",
   "com.typesafe.play" %% "play-test" % "2.4.0-RC2" % "test",
   "com.typesafe.play" %% "play-specs2" % "2.4.0-RC2" % "test",
   "org.webjars" % "bootstrap" % "3.1.0" % "test",
