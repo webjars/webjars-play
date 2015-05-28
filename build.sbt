@@ -6,7 +6,7 @@ scalaVersion := "2.10.5"
 
 crossScalaVersions := Seq("2.10.5", "2.11.6")
 
-version := "2.4.0-RC3-SNAPSHOT"
+version := "2.4.0-SNAPSHOT"
 
 javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
 
@@ -17,11 +17,11 @@ sources in (Test, play.sbt.routes.RoutesKeys.routes) ++= ((unmanagedResourceDire
 resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
 
 libraryDependencies ++= Seq(
-  "com.typesafe.play" %% "play" % "2.4.0-RC2" % "provided",
+  "com.typesafe.play" %% "play" % "2.4.0" % "provided",
   "org.webjars" % "requirejs" % "2.1.15",
-  "org.webjars" % "webjars-locator" % "0.22",
-  "com.typesafe.play" %% "play-test" % "2.4.0-RC2" % "test",
-  "com.typesafe.play" %% "play-specs2" % "2.4.0-RC2" % "test",
+  "org.webjars" % "webjars-locator" % "0.23",
+  "com.typesafe.play" %% "play-test" % "2.4.0" % "test",
+  "com.typesafe.play" %% "play-specs2" % "2.4.0" % "test",
   "org.webjars" % "bootstrap" % "3.1.0" % "test",
   "org.webjars" % "react" % "0.12.2" % "test",
   "org.webjars" % "bootswatch-yeti" % "3.1.1" % "test")
