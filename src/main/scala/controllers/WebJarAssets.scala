@@ -3,11 +3,10 @@ package controllers
 import play.api.http.{LazyHttpErrorHandler, HttpErrorHandler}
 import play.api.mvc.Action
 import play.api.mvc.AnyContent
-import play.api.Play.current
 import scala.util.matching.Regex
-import play.api.Play
 import scala.collection.JavaConverters._
 import org.webjars.WebJarAssetLocator
+import play.api.{Environment, Configuration}
 
 import javax.inject.{ Inject, Singleton }
 
@@ -18,16 +17,16 @@ import javax.inject.{ Inject, Singleton }
  * all files are searched for.
  */
 @Singleton
-class WebJarAssets @Inject() (errorHandler: HttpErrorHandler) extends AssetsBuilder(errorHandler) {
+class WebJarAssets @Inject() (errorHandler: HttpErrorHandler, configuration: Configuration, environment: Environment) extends AssetsBuilder(errorHandler) {
 
   val WebjarFilterExprDefault = """.*"""
   val WebjarFilterExprProp = "org.webjars.play.webJarFilterExpr"
 
-  val webJarFilterExpr = current.configuration.getString(WebjarFilterExprProp).getOrElse(WebjarFilterExprDefault)
+  lazy val webJarFilterExpr = configuration.getString(WebjarFilterExprProp).getOrElse(WebjarFilterExprDefault)
 
   val webJarAssetLocator = new WebJarAssetLocator(
     WebJarAssetLocator.getFullPathIndex(
-      new Regex(webJarFilterExpr).pattern, Play.application.classloader))
+      new Regex(webJarFilterExpr).pattern, environment.classLoader))
 
   /**
    * Controller Method to serve a WebJar asset
@@ -81,4 +80,5 @@ class WebJarAssets @Inject() (errorHandler: HttpErrorHandler) extends AssetsBuil
 
 }
 
-object WebJarAssets extends WebJarAssets(LazyHttpErrorHandler)
+object WebJarAssets extends WebJarAssets(LazyHttpErrorHandler, play.api.Play.current.configuration,
+  Environment.simple(path = play.api.Play.current.path, mode = play.api.Play.current.mode))
