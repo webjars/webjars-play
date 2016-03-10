@@ -1,10 +1,9 @@
 package controllers
 
-import play.api.http.{LazyHttpErrorHandler, HttpErrorHandler}
+import play.api.http.HttpErrorHandler
 import play.api.mvc.Action
 import play.api.mvc.AnyContent
 import scala.util.matching.Regex
-import scala.collection.JavaConverters._
 import org.webjars.WebJarAssetLocator
 import play.api.{Environment, Configuration}
 
@@ -79,6 +78,3 @@ class WebJarAssets @Inject() (errorHandler: HttpErrorHandler, configuration: Con
   }
 
 }
-
-object WebJarAssets extends WebJarAssets(LazyHttpErrorHandler, play.api.Play.current.configuration,
-  Environment.simple(path = play.api.Play.current.path, mode = play.api.Play.current.mode))

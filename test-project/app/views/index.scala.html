@@ -1,0 +1,46 @@
+@(webJarAssets: WebJarAssets, requireJS: org.webjars.play.RequireJS)
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel='stylesheet' href='@routes.WebJarAssets.at(webJarAssets.locate("css/bootstrap.min.css"))'>
+        <style>
+            body {
+                margin-top: 60px;
+            }
+        </style>
+
+        @Html(requireJS.setup(routes.Assets.versioned("javascripts/index.js")))
+    </head>
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">hello, bootstrap</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Show a Modal</button>
+        </div>
+
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">This is a Modal</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Bootstrap depends on jQuery.  So when you specify Bootstrap as a dependency you get jQuery too.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>

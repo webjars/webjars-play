@@ -1,27 +1,27 @@
+lazy val root = (project in file(".")).enablePlugins(play.sbt.routes.RoutesCompiler)
+
 organization := "org.webjars"
 
 name := "webjars-play"
 
-scalaVersion := "2.10.5"
+scalaVersion := "2.11.8"
 
-crossScalaVersions := Seq("2.10.5", "2.11.6")
-
-version := "2.4.0-3-SNAPSHOT"
+version := "2.5.0"
 
 javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
 
-enablePlugins(play.sbt.routes.RoutesCompiler)
+scalacOptions ++= Seq("-unchecked", "-deprecation")
 
 sources in (Test, play.sbt.routes.RoutesKeys.routes) ++= ((unmanagedResourceDirectories in Test).value * "routes").get
 
 resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
 
 libraryDependencies ++= Seq(
-  "com.typesafe.play" %% "play" % "2.4.0" % "provided",
+  "com.typesafe.play" %% "play" % "2.5.0" % "provided",
   "org.webjars" % "requirejs" % "2.1.20",
-  "org.webjars" % "webjars-locator" % "0.28",
-  "com.typesafe.play" %% "play-test" % "2.4.0" % "test",
-  "com.typesafe.play" %% "play-specs2" % "2.4.0" % "test",
+  "org.webjars" % "webjars-locator" % "0.30",
+  "com.typesafe.play" %% "play-test" % "2.5.0" % "test",
+  "com.typesafe.play" %% "play-specs2" % "2.5.0" % "test",
   "org.webjars" % "bootstrap" % "3.1.0" % "test",
   "org.webjars" % "react" % "0.12.2" % "test",
   "org.webjars" % "bootswatch-yeti" % "3.1.1" % "test")
@@ -29,8 +29,6 @@ libraryDependencies ++= Seq(
 licenses := Seq("MIT License" -> url("http://opensource.org/licenses/MIT"))
 
 homepage := Some(url("http://github.com/webjars/webjars-play"))
-
-unmanagedResourceDirectories in Compile <+= baseDirectory { _ / "conf" / "resources" }
 
 publishMavenStyle := true
 
