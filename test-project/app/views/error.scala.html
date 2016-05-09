@@ -1,0 +1,27 @@
+@(webJarAssets: WebJarAssets, message: String)
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel='stylesheet' href='@routes.WebJarAssets.at(webJarAssets.locate("css/bootstrap.min.css"))'>
+        <style>
+            body {
+                margin-top: 60px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">Error</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            @message
+        </div>
+
+    </body>
+</html>
