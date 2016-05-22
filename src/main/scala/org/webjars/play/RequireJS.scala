@@ -20,17 +20,27 @@ class RequireJS @Inject() (environment: Environment, webJarAssets: WebJarAssets)
       val routeInstance = field.get(null)
       routeInstance.asInstanceOf[{ def at(path: String): Call }].at(path)
     }
-    
+
     def nastyReflectedWebJarAssetsRoute(path: String): Call = nastyReflectedRoute(path, "WebJarAssets")
 
-    val setupJavaScript: String = org.webjars.RequireJS.getSetupJavaScript(nastyReflectedWebJarAssetsRoute("").url)
+    try {
+      val setupJavaScript: String = org.webjars.RequireJS.getSetupJavaScript(nastyReflectedWebJarAssetsRoute("").url)
 
-    val requireRoute = nastyReflectedWebJarAssetsRoute(webJarAssets.locate("require.min.js"))
-    
-    s"""<script>
-      |    // this stuff must be done before require.js is loaded
-      |    $setupJavaScript
-      |</script>
-      |<script data-main="${mainUrl.url}" src="$requireRoute"></script>""".stripMargin
+      val requireRoute = nastyReflectedWebJarAssetsRoute(webJarAssets.locate("require.min.js"))
+
+      s"""<script>
+        |    // this stuff must be done before require.js is loaded
+        |    $setupJavaScript
+        |</script>
+        |<script data-main="${mainUrl.url}" src="$requireRoute"></script>""".stripMargin
+    }
+    catch {
+      case e: Exception =>
+        throw new SetupException("The RequireJS config could not be determined probably because you are missing a WebJarAssets route", e)
+    }
+
   }
+
 }
+
+class SetupException(message: String, cause: Throwable) extends RuntimeException(message, cause)
