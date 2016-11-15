@@ -6,7 +6,7 @@ name := "webjars-play"
 
 scalaVersion := "2.11.8"
 
-version := "2.5.0-3"
+version := "2.5.0-4"
 
 javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
 
@@ -19,7 +19,7 @@ resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
 libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play" % "2.5.0" % "provided",
   "org.webjars" % "requirejs" % "2.1.20",
-  "org.webjars" % "webjars-locator" % "0.31",
+  "org.webjars" % "webjars-locator" % "0.32",
   "com.typesafe.play" %% "play-test" % "2.5.0" % "test",
   "com.typesafe.play" %% "play-specs2" % "2.5.0" % "test",
   "org.webjars" % "bootstrap" % "3.1.0" % "test",
