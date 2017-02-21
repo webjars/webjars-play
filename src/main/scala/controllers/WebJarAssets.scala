@@ -16,24 +16,24 @@ import javax.inject.{ Inject, Singleton }
  * all files are searched for.
  */
 @Singleton
-class WebJarAssets @Inject() (errorHandler: HttpErrorHandler, configuration: Configuration, environment: Environment) extends AssetsBuilder(errorHandler) {
+class WebJarAssets @Inject() (errorHandler: HttpErrorHandler, meta: AssetsMetadata, configuration: Configuration, environment: Environment) extends AssetsBuilder(errorHandler, meta) {
 
   val WebjarFilterExprDefault = """.*"""
   val WebjarFilterExprProp = "org.webjars.play.webJarFilterExpr"
 
-  lazy val webJarFilterExpr = configuration.getString(WebjarFilterExprProp).getOrElse(WebjarFilterExprDefault)
+  private lazy val webJarFilterExpr = configuration.getOptional[String](WebjarFilterExprProp).getOrElse(WebjarFilterExprDefault)
 
-  val webJarAssetLocator = new WebJarAssetLocator(
+  private val webJarAssetLocator = new WebJarAssetLocator(
     WebJarAssetLocator.getFullPathIndex(
       new Regex(webJarFilterExpr).pattern, environment.classLoader))
 
   /**
    * Controller Method to serve a WebJar asset
-   * 
+   *
    * @param file the file to serve
    * @return the Action that serves the file
    */
-  def at(file: String): Action[AnyContent] = {
+  override def at(file: String): Action[AnyContent] = {
     this.at("/" + WebJarAssetLocator.WEBJARS_PATH_PREFIX, file)
   }
 
