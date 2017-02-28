@@ -4,9 +4,11 @@ organization := "org.webjars"
 
 name := "webjars-play"
 
-scalaVersion := "2.11.8"
+scalaVersion := "2.12.1"
 
-version := "2.5.0-4"
+crossScalaVersions := Seq("2.11.8", "2.12.1")
+
+version := "2.6.0-M1"
 
 javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
 
@@ -14,14 +16,12 @@ scalacOptions ++= Seq("-unchecked", "-deprecation")
 
 sources in (Test, play.sbt.routes.RoutesKeys.routes) ++= ((unmanagedResourceDirectories in Test).value * "routes").get
 
-resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
-
 libraryDependencies ++= Seq(
-  "com.typesafe.play" %% "play" % "2.5.0" % "provided",
+  "com.typesafe.play" %% "play" % "2.6.0-M1" % "provided",
   "org.webjars" % "requirejs" % "2.1.20",
   "org.webjars" % "webjars-locator" % "0.32",
-  "com.typesafe.play" %% "play-test" % "2.5.0" % "test",
-  "com.typesafe.play" %% "play-specs2" % "2.5.0" % "test",
+  "com.typesafe.play" %% "play-test" % "2.6.0-M1" % "test",
+  "com.typesafe.play" %% "play-specs2" % "2.6.0-M1" % "test",
   "org.webjars" % "bootstrap" % "3.1.0" % "test",
   "org.webjars" % "react" % "0.12.2" % "test",
   "org.webjars" % "bootswatch-yeti" % "3.1.1" % "test")
@@ -36,9 +36,9 @@ publishArtifact in Test := false
 
 pomIncludeRepository := { _ => false }
 
-publishTo <<= version { (v: String) =>
+publishTo := {
   val nexus = "https://oss.sonatype.org/"
-  if (v.trim.endsWith("SNAPSHOT"))
+  if (version.value.trim.endsWith("SNAPSHOT"))
     Some("snapshots" at nexus + "content/repositories/snapshots")
   else
     Some("releases" at nexus + "service/local/staging/deploy/maven2")
