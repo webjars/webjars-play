@@ -1,6 +1,7 @@
 WebJars Play
 ============
 
+[![Build Status](https://travis-ci.org/webjars/webjars-play.svg?branch=master)](https://travis-ci.org/webjars/webjars-play)
 A user guide for this plugin can be found within the [WebJars Documentation](http://www.webjars.org/documentation).
 
 
