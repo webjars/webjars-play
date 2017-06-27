@@ -8,7 +8,7 @@ scalaVersion := "2.12.1"
 
 crossScalaVersions := Seq("2.11.8", "2.12.1")
 
-version := "2.6.0-M1"
+version := "2.6.0"
 
 javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
 
@@ -17,11 +17,11 @@ scalacOptions ++= Seq("-unchecked", "-deprecation")
 sources in (Test, play.sbt.routes.RoutesKeys.routes) ++= ((unmanagedResourceDirectories in Test).value * "routes").get
 
 libraryDependencies ++= Seq(
-  "com.typesafe.play" %% "play" % "2.6.0-M1" % "provided",
+  "com.typesafe.play" %% "play" % "2.6.0" % "provided",
   "org.webjars" % "requirejs" % "2.1.20",
   "org.webjars" % "webjars-locator" % "0.32",
-  "com.typesafe.play" %% "play-test" % "2.6.0-M1" % "test",
-  "com.typesafe.play" %% "play-specs2" % "2.6.0-M1" % "test",
+  "com.typesafe.play" %% "play-test" % "2.6.0" % "test",
+  "com.typesafe.play" %% "play-specs2" % "2.6.0" % "test",
   "org.webjars" % "bootstrap" % "3.1.0" % "test",
   "org.webjars" % "react" % "0.12.2" % "test",
   "org.webjars" % "bootswatch-yeti" % "3.1.1" % "test")
