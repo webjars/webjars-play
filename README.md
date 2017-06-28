@@ -13,5 +13,4 @@ Releasing webjars-play
 3. Tag git `v2.x.y-z`
 4. Push tags
 5. Release: `activator publish-signed`
-6. Add `-SNAPSHOT` back to `build.sbt` version
 7. Use the [Sonatype console](https://oss.sonatype.org/index.html#stagingRepositories) to release the staged artifacts

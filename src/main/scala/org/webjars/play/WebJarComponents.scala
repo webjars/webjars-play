@@ -1,6 +1,6 @@
 package org.webjars.play
 
-import controllers.{AssetsMetadata, WebJarAssets}
+import controllers.AssetsMetadata
 import play.api.http.HttpErrorHandler
 import play.api.{Configuration, Environment}
 
@@ -9,11 +9,13 @@ import play.api.{Configuration, Environment}
  */
 trait WebJarComponents {
 
-  def httpErrorHandler: HttpErrorHandler
   def configuration: Configuration
   def environment: Environment
-  def meta: AssetsMetadata
+  def errorHandler: HttpErrorHandler
+  def assetsMetadata: AssetsMetadata
 
-  lazy val webJarAssets = new WebJarAssets(httpErrorHandler, meta, configuration, environment)
+  lazy val webJarsUtil = new WebJarsUtil(configuration, environment)
+
+  lazy val webJarAssets = new WebJarAssets(errorHandler, assetsMetadata)
 
 }

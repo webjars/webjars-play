@@ -1,16 +1,12 @@
-@(webJarAssets: WebJarAssets, requireJS: org.webjars.play.RequireJS)
+@this(webJarUtil: org.webjars.play.WebJarsUtil)
 
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel='stylesheet' href='@routes.WebJarAssets.at(webJarAssets.locate("css/bootstrap.min.css"))'>
-        <style>
-            body {
-                margin-top: 60px;
-            }
-        </style>
+        <link rel='stylesheet' href='@webJarUtil.url("css/bootstrap.min.css")'>
+        <link rel='stylesheet' href='@routes.Assets.versioned("stylesheets/index.css")'>
 
-        @Html(requireJS.setup(routes.Assets.versioned("javascripts/index.js")))
+        @Html(webJarUtil.requireJs(routes.Assets.versioned("javascripts/index.js")))
     </head>
     <body>
         <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
