@@ -1,15 +1,15 @@
 package controllers
 
-import javax.inject.{Singleton, Inject}
+import javax.inject.{Inject, Singleton}
 
-import org.webjars.play.RequireJS
-import play.api.mvc.{Action, Controller}
+import org.webjars.play.{RequireJS, WebJarAssets, WebJarsUtil}
+import play.api.mvc.{Action, InjectedController}
 
 @Singleton
-class Application @Inject() (webJarAssets: WebJarAssets, requireJS: RequireJS) extends Controller {
+class Application @Inject() (indexTemplate: views.html.index) (implicit webJarsUtil: WebJarsUtil) extends InjectedController {
 
   def index = Action {
-    Ok(views.html.index(webJarAssets, requireJS))
+    Ok(indexTemplate())
   }
 
 }

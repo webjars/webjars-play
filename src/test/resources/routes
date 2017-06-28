@@ -1,2 +1,2 @@
-GET     /assets/*file        controllers.Assets.at(path="public", file)
-GET     /webjars/*file       controllers.WebJarAssets.at(file)
+GET     /assets/*file        controllers.Assets.at(path="/public", file)
+->      /webjars             webjars.Routes
