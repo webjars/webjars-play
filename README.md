@@ -12,5 +12,5 @@ Releasing webjars-play
 2. Commit
 3. Tag git `v2.x.y-z`
 4. Push tags
-5. Release: `activator publish-signed`
+5. Release: `activator +publish-signed`
 7. Use the [Sonatype console](https://oss.sonatype.org/index.html#stagingRepositories) to release the staged artifacts
