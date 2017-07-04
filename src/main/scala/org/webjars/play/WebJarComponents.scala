@@ -11,11 +11,11 @@ trait WebJarComponents {
 
   def configuration: Configuration
   def environment: Environment
-  def errorHandler: HttpErrorHandler
+  def httpErrorHandler: HttpErrorHandler
   def assetsMetadata: AssetsMetadata
 
   lazy val webJarsUtil = new WebJarsUtil(configuration, environment)
 
-  lazy val webJarAssets = new WebJarAssets(errorHandler, assetsMetadata)
+  lazy val webJarAssets = new WebJarAssets(httpErrorHandler, assetsMetadata)
 
 }
