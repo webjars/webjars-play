@@ -40,29 +40,26 @@ pomIncludeRepository := { _ => false }
 
 publishTo := {
   val nexus = "https://oss.sonatype.org/"
-  if (version.value.trim.endsWith("SNAPSHOT"))
+  if (isSnapshot.value)
     Some("snapshots" at nexus + "content/repositories/snapshots")
   else
     Some("releases" at nexus + "service/local/staging/deploy/maven2")
 }
 
-credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
+scmInfo := Some(
+  ScmInfo(
+    url("https://github.com/webjars/webjars-play"),
+    "scm:git:https://github.com/webjars/webjars-play.git"
+  )
+)
 
-pomExtra :=
-  <scm>
-    <connection>scm:git:https://github.com/webjars/webjars-play.git</connection>
-    <developerConnection>scm:git:https://github.com/webjars/webjars-play.git</developerConnection>
-    <url>git@github.com:webjars/webjars-play.git</url>
-  </scm>
-  <developers>
-    <developer>
-      <id>jamesward</id>
-      <name>James Ward</name>
-      <email>james@jamesward.com</email>
-    </developer>
-  </developers>
-  <parent>
-    <groupId>org.sonatype.oss</groupId>
-    <artifactId>oss-parent</artifactId>
-    <version>7</version>
-  </parent>
+developers := List(
+  Developer(
+    id    = "jamesward",
+    name  = "James Ward",
+    email = "james@jamesward.com",
+    url   = url("http://jamesward.com")
+  )
+)
+
+useGpg := true
