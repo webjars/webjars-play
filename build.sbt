@@ -1,6 +1,4 @@
-import ReleaseTransformations._
-
-lazy val root = (project in file(".")).enablePlugins(play.sbt.routes.RoutesCompiler)
+lazy val root = (project in file(".")).enablePlugins(play.sbt.routes.RoutesCompiler, GitVersioning)
 
 organization := "org.webjars"
 
@@ -9,8 +7,6 @@ name := "webjars-play"
 scalaVersion := "2.12.2"
 
 crossScalaVersions := Seq("2.11.8", "2.12.2")
-
-version := "2.6.0-1"
 
 javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
 
@@ -65,18 +61,3 @@ developers := List(
 )
 
 useGpg := true
-
-releaseProcess := Seq[ReleaseStep](
-  checkSnapshotDependencies,
-  inquireVersions,
-  runClean,
-  runTest,
-  setReleaseVersion,
-  commitReleaseVersion,
-  tagRelease,
-  ReleaseStep(action = Command.process("publishSigned", _), enableCrossBuild = true),
-  setNextVersion,
-  commitNextVersion,
-  ReleaseStep(action = Command.process("sonatypeReleaseAll", _), enableCrossBuild = true),
-  pushChanges
-)
