@@ -4,28 +4,36 @@ import javax.inject.{Inject, Singleton}
 
 import org.webjars.WebJarAssetLocator
 import play.api.mvc.Call
-import play.api.{Configuration, Environment}
+import play.api.{Configuration, Environment, Logger, Mode}
 
+import scala.util.{Failure, Success, Try}
 import scala.util.matching.Regex
 
 /**
-  * Resolves WebJar paths
+  * WebJars Util
   *
-  * <p>org.webjars.play.webJarFilterExpr can be used to declare a regex for the
+  * Config:
+  *
+  * webjars.filter-expression can be used to declare a regex for the
   * files that should be looked for when searching within WebJars. By default
   * all files are searched for.
+  *
+  * webjars.cdn-url overrides the default CDN url (https://cdn.jsdelivr.net/webjars)
+  *
+  * webjars.use-cdn toggles the CDN
   */
 @Singleton
 class WebJarsUtil @Inject() (configuration: Configuration, environment: Environment) {
 
-  val WebjarFilterExprDefault = """.*"""
-  val WebjarFilterExprProp = "org.webjars.play.webJarFilterExpr"
+  lazy val webJarFilterExpr: String = configuration.getOptional[String]("webjars.filter-expression").getOrElse(".*")
+  lazy val cdnUrl: String = configuration.getOptional[String]("webjars.cdn-url").getOrElse("https://cdn.jsdelivr.net/webjars")
+  lazy val useCdn: Boolean = configuration.getOptional[Boolean]("webjars.use-cdn").getOrElse(false)
 
-  private lazy val webJarFilterExpr = configuration.getOptional[String](WebjarFilterExprProp).getOrElse(WebjarFilterExprDefault)
-
-  private val webJarAssetLocator = new WebJarAssetLocator(
+  private lazy val webJarAssetLocator = new WebJarAssetLocator(
     WebJarAssetLocator.getFullPathIndex(
-      new Regex(webJarFilterExpr).pattern, environment.classLoader))
+      new Regex(webJarFilterExpr).pattern, environment.classLoader
+    )
+  )
 
   /**
     * Locate a file in a WebJar
@@ -36,8 +44,8 @@ class WebJarsUtil @Inject() (configuration: Configuration, environment: Environm
     * @return the path to the file (sans-the webjars prefix)
     *
     */
-  def locate(file: String): String = {
-    webJarAssetLocator.getFullPath(file).stripPrefix(WebJarAssetLocator.WEBJARS_PATH_PREFIX + "/")
+  def locate(file: String): Try[String] = {
+    Try(webJarAssetLocator.getFullPath(file).stripPrefix(WebJarAssetLocator.WEBJARS_PATH_PREFIX + "/"))
   }
 
   /**
@@ -48,8 +56,8 @@ class WebJarsUtil @Inject() (configuration: Configuration, environment: Environm
     * @return the path to the file (sans-the webjars prefix)
     *
     */
-  def locate(webJar: String, path: String): String = {
-    webJarAssetLocator.getFullPath(webJar, path).stripPrefix(WebJarAssetLocator.WEBJARS_PATH_PREFIX + "/")
+  def locate(webJar: String, path: String): Try[String] = {
+    Try(webJarAssetLocator.getFullPath(webJar, path).stripPrefix(WebJarAssetLocator.WEBJARS_PATH_PREFIX + "/"))
   }
 
   /**
@@ -62,20 +70,59 @@ class WebJarsUtil @Inject() (configuration: Configuration, environment: Environm
     * @return the path to the file (sans-the webjars prefix)
     *
     */
-  def fullPath(webjar: String, path: String): String = {
-    val version = webJarAssetLocator.getWebJars.get(webjar)
-    s"$webjar/$version/$path"
+  def fullPath(webjar: String, path: String): Try[String] = {
+    val versionTry = Try(webJarAssetLocator.getWebJars.get(webjar))
+    versionTry.map { version =>
+      s"$webjar/$version/$path"
+    }
+  }
+
+  /**
+    * Get the groupId from a path
+    *
+    * @example groupId("jquery/1.9.0/jquery.js") will return "org.webjars" if the classpath contains the org.webjars jquery jar
+    *
+    * @param path a string to parse a WebJar name from
+    * @return the artifact groupId based on the classpath
+    */
+  def groupId(path: String): Try[String] = {
+    val webJar = path.split("/").head
+    val suffix = s"/$webJar/pom.xml"
+    val prefix = "META-INF/maven/"
+    val fullPathTry = Try(webJarAssetLocator.getFullPath(suffix))
+
+    fullPathTry.map(_.stripSuffix(suffix).stripPrefix(prefix))
+  }
+
+  /**
+    * Based on config, either returns a local url or a cdn url for a given asset path
+    *
+    * @param pathTry Possibly a path to convert to a local url or cdn url
+    * @return Possibly the local or cdn url
+    */
+  def localOrCdnUrl(pathTry: Try[String]): Try[String] = {
+    pathTry.flatMap { path =>
+      if (useCdn) {
+        val groupIdTry = groupId(path)
+        groupIdTry.map { groupId =>
+          s"$cdnUrl/$groupId/$path"
+        }
+      }
+      else {
+        Success(routes.WebJarAssets.at(path).url)
+      }
+    }
   }
 
 
   /**
-    * Locates a WebJar from a partial path and returns the reverse route
+    * Locates a WebJar from a partial path and returns the reverse route or CDN URL
     *
     * @param path The partial path of a file in a WebJar
     * @return The reverse route to the WebJar asset
     */
-  def url(path: String): Call = {
-    routes.WebJarAssets.at(locate(path))
+  def url(path: String): Try[String] = {
+    localOrCdnUrl(locate(path))
   }
 
   /**
@@ -85,8 +132,133 @@ class WebJarsUtil @Inject() (configuration: Configuration, environment: Environm
     * @param path The partial path of a file in a WebJar
     * @return The reverse route to the WebJar asset
     */
-  def url(webJar: String, path: String): Call = {
-    routes.WebJarAssets.at(locate(webJar, path))
+  def url(webJar: String, path: String): Try[String] = {
+    localOrCdnUrl(locate(webJar, path))
+  }
+
+  /**
+    * Turns a possible url into a tag using a provided function.  Uses the mode of the application to determine if an error should be returned or not.
+    *
+    * @param urlTry A possible url
+    * @param f A function that will render a successful url
+    * @return The tag to be rendered or when there is an error, an emtpy string in Prod mode and an error comment otherwise
+    */
+  def tag(urlTry: Try[String])(f: String => String): String = {
+    urlTry match {
+      case Success(url) =>
+        f(url)
+      case Failure(e) =>
+        Logger.error("Could not get URL", e)
+        environment.mode match {
+          case Mode.Prod =>
+            ""
+          case _ =>
+            s"""<!-- Could not get URL: ${e.getMessage} -->"""
+        }
+    }
+  }
+
+  /**
+    * A script tag
+    *
+    * @param urlTry A possible url
+    * @param otherParams Other params for the script tag
+    * @return A string with the tag or an error / empty string (depending on mode)
+    */
+  def script(urlTry: Try[String], otherParams: Map[String, String] = Map.empty[String, String]): String = {
+    tag(urlTry) { url =>
+      val params = otherParams.map { case (name, value) =>
+        s"""$name="$value""""
+      }.mkString(" ")
+
+      s"""<script src="$url" $params></script>"""
+    }
+  }
+
+  /**
+    * A script tag
+    *
+    * @param call A call that becomes a url
+    * @return A string with the tag or an error / empty string (depending on mode)
+    */
+  def script(call: Call): String = {
+    script(Success(call.url))
+  }
+
+  /**
+    * A script tag
+    *
+    * @param path A path that becomes a url
+    * @return A string with the tag or an error / empty string (depending on mode)
+    */
+  def script(path: String): String = {
+    script(url(path))
+  }
+
+  /**
+    * A script tag
+    *
+    * @param webJar Name of the WebJar
+    * @param path A path to an asset in the WebJar
+    * @return A string with the tag or an error / empty string (depending on mode)
+    */
+  def script(webJar: String, path: String): String = {
+    script(url(webJar, path))
+  }
+
+  /**
+    * A script tag
+    *
+    * @param webJar Name of the WebJar
+    * @param path A path to an asset in the WebJar
+    * @param otherParams Other params to add to the script tag
+    * @return A string with the tag or an error / empty string (depending on mode)
+    */
+  def scriptWithParams(webJar: String, path: String, otherParams: Map[String, String]): String = {
+    script(url(webJar, path), otherParams)
+  }
+
+  /**
+    * A CSS link tag
+    *
+    * @param urlTry A possible url
+    * @return A string with the tag or an error / empty string (depending on mode)
+    */
+  def css(urlTry: Try[String]): String = {
+    tag(urlTry) { url =>
+      s"""<link rel="stylesheet" type="text/css" href="$url">"""
+    }
+  }
+
+  /**
+    * A CSS link tag
+    *
+    * @param call A call that will become a url
+    * @return A string with the tag or an error / empty string (depending on mode)
+    */
+  def css(call: Call): String = {
+    css(Success(call.url))
+  }
+
+  /**
+    * A CSS link tag
+    *
+    * @param path A call that will become a url
+    * @return A string with the tag or an error / empty string (depending on mode)
+    */
+  def css(path: String): String = {
+    css(url(path))
+  }
+
+  /**
+    * A CSS link tag
+    *
+    * @param webJar Name of the WebJar
+    * @param path A path to an asset in the WebJar
+    * @return A string with the tag or an error / empty string (depending on mode)
+    */
+  def css(webJar: String, path: String): String = {
+    css(url(webJar, path))
   }
 
   /**
@@ -96,12 +268,9 @@ class WebJarsUtil @Inject() (configuration: Configuration, environment: Environm
     * @return The RequireJS config and main script tags
     */
   def requireJs(mainUrl: Call): String = {
+    val setup = script(routes.RequireJS.setup())
 
-    val setup = s"""<script src="${routes.RequireJS.setup().url}"></script>"""
-
-    val requireRoute = url("requirejs", "require.min.js")
-
-    val main = s"""<script data-main="${mainUrl.url}" src="${requireRoute.url}"></script>"""
+    val main = scriptWithParams("requirejs", "require.min.js", Map("data-main" -> mainUrl.url))
 
     setup + main
   }

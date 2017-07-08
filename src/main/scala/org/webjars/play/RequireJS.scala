@@ -6,10 +6,16 @@ import play.api.http.MimeTypes
 import play.api.mvc.{Action, AnyContent, InjectedController}
 
 @Singleton
-class RequireJS extends InjectedController {
+class RequireJS @Inject() (webJarsUtil: WebJarsUtil) extends InjectedController {
 
   def setup(): Action[AnyContent] = Action {
-    Ok(org.webjars.RequireJS.getSetupJavaScript(routes.WebJarAssets.at("").url)).as(MimeTypes.JAVASCRIPT)
+    val setupJavaScript = if (webJarsUtil.useCdn) {
+      org.webjars.RequireJS.getSetupJavaScript(webJarsUtil.cdnUrl + "/", routes.WebJarAssets.at("").url)
+    }
+    else {
+      org.webjars.RequireJS.getSetupJavaScript(routes.WebJarAssets.at("").url)
+    }
+    Ok(setupJavaScript).as(MimeTypes.JAVASCRIPT)
   }
 
 }

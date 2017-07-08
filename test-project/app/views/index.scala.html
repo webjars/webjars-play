@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel='stylesheet' href='@webJarUtil.url("css/bootstrap.min.css")'>
+        @Html(webJarUtil.css("bootstrap.min.css"))
         <link rel='stylesheet' href='@routes.Assets.versioned("stylesheets/index.css")'>
 
         @Html(webJarUtil.requireJs(routes.Assets.versioned("javascripts/index.js")))
