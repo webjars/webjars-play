@@ -17,11 +17,11 @@ sources in (Compile, play.sbt.routes.RoutesKeys.routes) ++= ((unmanagedResourceD
 sources in (Test, play.sbt.routes.RoutesKeys.routes) ++= ((unmanagedResourceDirectories in Test).value * "routes").get
 
 libraryDependencies ++= Seq(
-  "com.typesafe.play" %% "play" % "2.6.1" % "provided",
+  "com.typesafe.play" %% "play" % "2.6.3" % "provided",
   "org.webjars" % "requirejs" % "2.3.3",
   "org.webjars" % "webjars-locator" % "0.32-1",
-  "com.typesafe.play" %% "play-test" % "2.6.1" % "test",
-  "com.typesafe.play" %% "play-specs2" % "2.6.1" % "test",
+  "com.typesafe.play" %% "play-test" % "2.6.3" % "test",
+  "com.typesafe.play" %% "play-specs2" % "2.6.3" % "test",
   "org.webjars" % "bootstrap" % "3.1.0" % "test",
   "org.webjars" % "react" % "0.12.2" % "test",
   "org.webjars" % "bootswatch-yeti" % "3.1.1" % "test")
