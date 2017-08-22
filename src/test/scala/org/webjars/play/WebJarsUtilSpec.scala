@@ -103,6 +103,27 @@ class WebJarsUtilSpec extends PlaySpecification {
       val css = webJarsUtil.css("bootswatch-yeti", "bootstrap.css")
       css must beEqualTo("""<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/webjars/org.webjars/bootswatch-yeti/3.1.1/css/bootstrap.css">""")
     }
+    "generate an img tag from a partial WebJar path" in new WithApplication {
+      val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
+      val img = webJarsUtil.img("bootswatch-yeti", "bootstrap.css")
+      img must beEqualTo("""<img src="/webjars/bootswatch-yeti/3.1.1/css/bootstrap.css" >""")
+    }
+    "generate an error comment when the path isn't found" in new WithApplication {
+      val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
+      val img = webJarsUtil.img("asdf1234")
+      img must beEqualTo("""<!-- Could not get URL: asdf1234 could not be found. Make sure you've added the corresponding WebJar and please check for typos. -->""")
+    }
+    "generate an empty string when the path isn't found in prod mode" in new WithProdApplication {
+      app.environment.mode must beEqualTo(Mode.Prod)
+      val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
+      val img = webJarsUtil.img("asdf1234")
+      img must beEqualTo("")
+    }
+    "generate a css tag with a cdn url from a partial WebJar path" in new WithApplication(_.configure("webjars.use-cdn" -> "true")) {
+      val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
+      val img = webJarsUtil.img("bootswatch-yeti", "bootstrap.css")
+      img must beEqualTo("""<img src="https://cdn.jsdelivr.net/webjars/org.webjars/bootswatch-yeti/3.1.1/css/bootstrap.css" >""")
+    }
     "generate a requireJs config" in new WithApplication {
       val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
       val requireJs = webJarsUtil.requireJs(Call("GET", "/assets/js/app"))

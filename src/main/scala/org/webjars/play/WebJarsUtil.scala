@@ -159,6 +159,18 @@ class WebJarsUtil @Inject() (configuration: Configuration, environment: Environm
   }
 
   /**
+    * Turns a path into a tag using a provided function.  Uses the mode of the application to determine if an error should be returned or not.
+    *
+    * @param path The partial path of a file in a WebJar
+    * @param f A function that will render a successful url
+    * @return The tag to be rendered or when there is an error, an emtpy string in Prod mode and an error comment otherwise
+    *
+    */
+  def tag(path: String)(f: String => String): String = {
+    tag(url(path))(f)
+  }
+
+  /**
     * A script tag
     *
     * @param urlTry A possible url
@@ -259,6 +271,77 @@ class WebJarsUtil @Inject() (configuration: Configuration, environment: Environm
     */
   def css(webJar: String, path: String): String = {
     css(url(webJar, path))
+  }
+
+  /**
+    * A img tag
+    *
+    * @param urlTry A possible url
+    * @param otherParams Other params for the script tag
+    * @return A string with the tag or an error / empty string (depending on mode)
+    */
+  def img(urlTry: Try[String], otherParams: Map[String, String] = Map.empty[String, String]): String = {
+    tag(urlTry) { url =>
+      val params = otherParams.map { case (name, value) =>
+        s"""$name="$value""""
+      }.mkString(" ")
+
+      s"""<img src="$url" $params>"""
+    }
+  }
+
+  /**
+    * A img tag
+    *
+    * @param call A call that becomes a url
+    * @return A string with the tag or an error / empty string (depending on mode)
+    */
+  def img(call: Call): String = {
+    img(Success(call.url))
+  }
+
+  /**
+    * A img tag
+    *
+    * @param path A path that becomes a url
+    * @return A string with the tag or an error / empty string (depending on mode)
+    */
+  def img(path: String): String = {
+    img(url(path))
+  }
+
+  /**
+    * A script tag
+    *
+    * @param webJar Name of the WebJar
+    * @param path A path to an asset in the WebJar
+    * @return A string with the tag or an error / empty string (depending on mode)
+    */
+  def img(webJar: String, path: String): String = {
+    img(url(webJar, path))
+  }
+
+  /**
+    * A img tag
+    *
+    * @param path A path to an asset in the WebJar
+    * @param otherParams Other params to add to the script tag
+    * @return A string with the tag or an error / empty string (depending on mode)
+    */
+  def imgWithParams(path: String, otherParams: Map[String, String]): String = {
+    img(url(path), otherParams)
+  }
+
+  /**
+    * A img tag
+    *
+    * @param webJar Name of the WebJar
+    * @param path A path to an asset in the WebJar
+    * @param otherParams Other params to add to the script tag
+    * @return A string with the tag or an error / empty string (depending on mode)
+    */
+  def imgWithParams(webJar: String, path: String, otherParams: Map[String, String]): String = {
+    img(url(webJar, path), otherParams)
   }
 
   /**
