@@ -35,7 +35,7 @@ class WebJarsUtilSpec extends PlaySpecification {
       val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
 
       val bootstrapPath = webJarsUtil.locate("bootswatch-yeti", "bootstrap.min.css")
-      bootstrapPath must beASuccessfulTry("bootswatch-yeti/3.1.1/css/bootstrap.min.css")
+      bootstrapPath must beASuccessfulTry("bootswatch-yeti/3.3.7/css/bootstrap.min.css")
     }
     "get a MultipleMatchesException if there are multiple matches" in new WithApplication {
       val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
@@ -64,7 +64,7 @@ class WebJarsUtilSpec extends PlaySpecification {
     "generate a script tag from a partial WebJar path" in new WithApplication {
       val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
       val script = webJarsUtil.script("jquery.js")
-      script must beEqualTo("""<script src="/webjars/jquery/1.9.0/jquery.js" ></script>""")
+      script must beEqualTo("""<script src="/webjars/jquery/1.11.1/jquery.js" ></script>""")
     }
     "generate an error comment when the path isn't found" in new WithApplication {
       val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
@@ -80,12 +80,12 @@ class WebJarsUtilSpec extends PlaySpecification {
     "generate a script tag with a cdn url from a partial WebJar path" in new WithApplication(_.configure("webjars.use-cdn" -> "true")) {
       val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
       val script = webJarsUtil.script("jquery.js")
-      script must beEqualTo("""<script src="https://cdn.jsdelivr.net/webjars/org.webjars/jquery/1.9.0/jquery.js" ></script>""")
+      script must beEqualTo("""<script src="https://cdn.jsdelivr.net/webjars/org.webjars/jquery/1.11.1/jquery.js" ></script>""")
     }
     "generate a css tag from a partial WebJar path" in new WithApplication {
       val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
       val css = webJarsUtil.css("bootswatch-yeti", "bootstrap.css")
-      css must beEqualTo("""<link rel="stylesheet" type="text/css" href="/webjars/bootswatch-yeti/3.1.1/css/bootstrap.css">""")
+      css must beEqualTo("""<link rel="stylesheet" type="text/css" href="/webjars/bootswatch-yeti/3.3.7/css/bootstrap.css">""")
     }
     "generate an error comment when the path isn't found" in new WithApplication {
       val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
@@ -101,7 +101,7 @@ class WebJarsUtilSpec extends PlaySpecification {
     "generate a css tag with a cdn url from a partial WebJar path" in new WithApplication(_.configure("webjars.use-cdn" -> "true")) {
       val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
       val css = webJarsUtil.css("bootswatch-yeti", "bootstrap.css")
-      css must beEqualTo("""<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/webjars/org.webjars/bootswatch-yeti/3.1.1/css/bootstrap.css">""")
+      css must beEqualTo("""<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/webjars/org.webjars/bootswatch-yeti/3.3.7/css/bootstrap.css">""")
     }
     "generate a requireJs config" in new WithApplication {
       val webJarsUtil = app.injector.instanceOf[WebJarsUtil]

@@ -16,15 +16,17 @@ sources in (Compile, play.sbt.routes.RoutesKeys.routes) ++= ((unmanagedResourceD
 
 sources in (Test, play.sbt.routes.RoutesKeys.routes) ++= ((unmanagedResourceDirectories in Test).value * "routes").get
 
+val playVer: String = "2.6.5"
+
 libraryDependencies ++= Seq(
-  "com.typesafe.play" %% "play" % "2.6.3" % "provided",
+  "com.typesafe.play" %% "play" % playVer % "provided",
   "org.webjars" % "requirejs" % "2.3.3",
   "org.webjars" % "webjars-locator" % "0.32-1",
-  "com.typesafe.play" %% "play-test" % "2.6.3" % "test",
-  "com.typesafe.play" %% "play-specs2" % "2.6.3" % "test",
-  "org.webjars" % "bootstrap" % "3.1.0" % "test",
+  "com.typesafe.play" %% "play-test" % playVer % "test",
+  "com.typesafe.play" %% "play-specs2" % playVer % "test",
+  "org.webjars" % "bootstrap" % "3.3.7-1" % "test",
   "org.webjars" % "react" % "0.12.2" % "test",
-  "org.webjars" % "bootswatch-yeti" % "3.1.1" % "test")
+  "org.webjars" % "bootswatch-yeti" % "3.3.7" % "test")
 
 licenses := Seq("MIT License" -> url("http://opensource.org/licenses/MIT"))
 
