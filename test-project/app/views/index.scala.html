@@ -3,10 +3,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-        @Html(webJarUtil.css("bootstrap.min.css"))
+        @webJarUtil.locate("bootstrap.min.css").css()
         <link rel='stylesheet' href='@routes.Assets.versioned("stylesheets/index.css")'>
 
-        @Html(webJarUtil.requireJs(routes.Assets.versioned("javascripts/index.js")))
+        @webJarUtil.requireJs(routes.Assets.versioned("javascripts/index.js"))
     </head>
     <body>
         <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
