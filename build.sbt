@@ -1,12 +1,12 @@
-lazy val root = (project in file(".")).enablePlugins(play.sbt.routes.RoutesCompiler, GitVersioning)
+lazy val root = (project in file(".")).enablePlugins(play.sbt.routes.RoutesCompiler, GitVersioning, SbtTwirl)
 
 organization := "org.webjars"
 
 name := "webjars-play"
 
-scalaVersion := "2.12.3"
+scalaVersion := "2.12.4"
 
-crossScalaVersions := Seq("2.11.11", "2.12.3")
+crossScalaVersions := Seq("2.11.12", "2.12.4")
 
 javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
 
@@ -17,14 +17,16 @@ sources in (Compile, play.sbt.routes.RoutesKeys.routes) ++= ((unmanagedResourceD
 sources in (Test, play.sbt.routes.RoutesKeys.routes) ++= ((unmanagedResourceDirectories in Test).value * "routes").get
 
 libraryDependencies ++= Seq(
-  "com.typesafe.play" %% "play" % "2.6.3" % "provided",
-  "org.webjars" % "requirejs" % "2.3.3",
+  "com.typesafe.play" %% "play" % "2.6.10" % "provided",
+  "org.webjars" % "requirejs" % "2.3.5",
   "org.webjars" % "webjars-locator" % "0.32-1",
-  "com.typesafe.play" %% "play-test" % "2.6.3" % "test",
-  "com.typesafe.play" %% "play-specs2" % "2.6.3" % "test",
+  "org.webjars" % "webjars-locator-core" % "0.35",
+  "com.typesafe.play" %% "play-test" % "2.6.10" % "test",
+  "com.typesafe.play" %% "play-specs2" % "2.6.10" % "test",
   "org.webjars" % "bootstrap" % "3.1.0" % "test",
   "org.webjars" % "react" % "0.12.2" % "test",
-  "org.webjars" % "bootswatch-yeti" % "3.1.1" % "test")
+  "org.webjars" % "bootswatch-yeti" % "3.1.1" % "test"
+)
 
 licenses := Seq("MIT License" -> url("http://opensource.org/licenses/MIT"))
 
@@ -62,4 +64,4 @@ developers := List(
 
 useGpg := true
 
-enablePlugins(SbtTwirl)
+fork in Test := true

@@ -14,7 +14,7 @@ class RequireJSSpec extends PlaySpecification {
       status(result) must equalTo(OK)
       contentType(result) must beSome(MimeTypes.JAVASCRIPT)
       contentAsString(result) must contain("return ['/webjars/' + webJarId")
-      contentAsString(result) must contain("\"requirejs\":\"2.3.3\"")
+      contentAsString(result) must contain("\"requirejs\":\"2.3.5\"")
     }
     "produce a setup using a cdn" in new WithApplication(_.configure("webjars.use-cdn" -> "true")) {
       val requireJs = app.injector.instanceOf[RequireJS]

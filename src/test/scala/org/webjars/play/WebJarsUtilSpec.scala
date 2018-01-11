@@ -31,7 +31,7 @@ class WebJarsUtilSpec extends PlaySpecification {
       val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
 
       val requireJsPath = webJarsUtil.locate("require.js")
-      requireJsPath.path must beASuccessfulTry("requirejs/2.3.3/require.js")
+      requireJsPath.path must beASuccessfulTry("requirejs/2.3.5/require.js")
     }
     "be able to locate an asset with a webjar specified" in new WithApplication {
       val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
@@ -51,17 +51,17 @@ class WebJarsUtilSpec extends PlaySpecification {
     }
     "url" in new WithApplication {
       val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
-      webJarsUtil.locate("requirejs/2.3.3/require.js").url must beASuccessfulTry("/webjars/requirejs/2.3.3/require.js")
-      webJarsUtil.locate("requirejs", "requirejs/2.3.3/require.js").url must beASuccessfulTry("/webjars/requirejs/2.3.3/require.js")
+      webJarsUtil.locate("requirejs/2.3.5/require.js").url must beASuccessfulTry("/webjars/requirejs/2.3.5/require.js")
+      webJarsUtil.locate("requirejs", "requirejs/2.3.5/require.js").url must beASuccessfulTry("/webjars/requirejs/2.3.5/require.js")
       webJarsUtil.locate("asdf1234qwer4321").url must beAFailedTry
     }
     "url with a cdn" in new WithApplication(_.configure("webjars.use-cdn" -> "true")) {
       val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
-      webJarsUtil.locate("require.js").url must beASuccessfulTry("https://cdn.jsdelivr.net/webjars/org.webjars/requirejs/2.3.3/require.js")
+      webJarsUtil.locate("require.js").url must beASuccessfulTry("https://cdn.jsdelivr.net/webjars/org.webjars/requirejs/2.3.5/require.js")
     }
     "url with a custom cdn" in new WithApplication(_.configure("webjars.use-cdn" -> "true", "webjars.cdn-url" -> "http://asdf.com")) {
       val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
-      webJarsUtil.locate("require.js").url must beASuccessfulTry("http://asdf.com/org.webjars/requirejs/2.3.3/require.js")
+      webJarsUtil.locate("require.js").url must beASuccessfulTry("http://asdf.com/org.webjars/requirejs/2.3.5/require.js")
     }
     "generate a script tag from a partial WebJar path" in new WithApplication {
       val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
@@ -131,7 +131,7 @@ class WebJarsUtilSpec extends PlaySpecification {
       val requireJs = webJarsUtil.requireJs(Call("GET", "/assets/js/app"))
 
       requireJs.body must contain ("""<script src="/webjars/_requirejs" ></script>""")
-      requireJs.body must contain("""<script src="/webjars/requirejs/2.3.3/require.min.js"  data-main="/assets/js/app" ></script>""")
+      requireJs.body must contain("""<script src="/webjars/requirejs/2.3.5/require.min.js"  data-main="/assets/js/app" ></script>""")
     }
     "generate a requireJs config with a cdn" in new WithApplication(_.configure("webjars.use-cdn" -> "true")) {
       val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
@@ -139,7 +139,7 @@ class WebJarsUtilSpec extends PlaySpecification {
       val requireJs = webJarsUtil.requireJs(Call("GET", "/assets/js/app"))
 
       requireJs.body must contain("""<script src="/webjars/_requirejs" ></script>""")
-      requireJs.body must contain("""<script src="https://cdn.jsdelivr.net/webjars/org.webjars/requirejs/2.3.3/require.min.js"  data-main="/assets/js/app" ></script>""")
+      requireJs.body must contain("""<script src="https://cdn.jsdelivr.net/webjars/org.webjars/requirejs/2.3.5/require.min.js"  data-main="/assets/js/app" ></script>""")
     }
   }
 
