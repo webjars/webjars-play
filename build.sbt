@@ -4,7 +4,7 @@ organization := "org.webjars"
 
 name := "webjars-play"
 
-scalaVersion := "2.12.4"
+scalaVersion := "2.11.12"
 
 crossScalaVersions := Seq("2.11.12", "2.12.4")
 

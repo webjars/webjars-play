@@ -48,8 +48,11 @@ class WebJarsUtil @Inject() (configuration: Configuration, environment: Environm
       fullPathTry.map(_.stripSuffix(suffix).stripPrefix(prefix))
     }
 
-    private[this] def tag(f: String => Html): Html =
-      url.fold(err => {
+    private[this] def tag(f: String => Html): Html = {
+      url match {
+        case Success(assetUrl) =>
+          f(assetUrl)
+        case Failure(err) =>
           val errMsg = s"couldn't find asset $path"
           Logger.error(errMsg, err)
           environment.mode match {
@@ -58,7 +61,8 @@ class WebJarsUtil @Inject() (configuration: Configuration, environment: Environm
             case _ =>
               throw err
           }
-      }, f)
+      }
+    }
 
     def script(params: Map[String, String] = Map.empty): Html =
       tag(html.script(_, params))
