@@ -1,0 +1,2 @@
+@(url: String, params: Map[String, String] = Map.empty)
+<img src="@url" @for(p <- params) { @{p._1}="@{p._2}" }>

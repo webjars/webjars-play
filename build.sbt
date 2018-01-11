@@ -61,3 +61,5 @@ developers := List(
 )
 
 useGpg := true
+
+enablePlugins(SbtTwirl)
