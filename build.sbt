@@ -6,7 +6,7 @@ name := "webjars-play"
 
 scalaVersion := "2.11.12"
 
-crossScalaVersions := Seq("2.11.12", "2.12.4")
+crossScalaVersions := Seq("2.11.12", "2.12.7")
 
 javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
 
