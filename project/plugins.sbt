@@ -1,4 +1,4 @@
-addSbtPlugin("com.jsuereth" % "sbt-pgp" % "1.1.2-1")
+addSbtPlugin("com.jsuereth" % "sbt-pgp" % "2.0.0-M2")
 
 addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.7.0-RC3")
 

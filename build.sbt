@@ -64,6 +64,4 @@ developers := List(
   )
 )
 
-useGpg := true
-
 fork in Test := true
