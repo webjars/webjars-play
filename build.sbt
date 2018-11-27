@@ -16,13 +16,15 @@ sources in (Compile, play.sbt.routes.RoutesKeys.routes) ++= ((unmanagedResourceD
 
 sources in (Test, play.sbt.routes.RoutesKeys.routes) ++= ((unmanagedResourceDirectories in Test).value * "routes").get
 
+val playVersion = "2.7.0-RC3"
+
 libraryDependencies ++= Seq(
-  "com.typesafe.play" %% "play" % "2.6.10" % "provided",
-  "org.webjars" % "requirejs" % "2.3.5",
-  "org.webjars" % "webjars-locator" % "0.32-1",
-  "org.webjars" % "webjars-locator-core" % "0.35",
-  "com.typesafe.play" %% "play-test" % "2.6.10" % "test",
-  "com.typesafe.play" %% "play-specs2" % "2.6.10" % "test",
+  "com.typesafe.play" %% "play" % playVersion % "provided",
+  "org.webjars" % "requirejs" % "2.3.6",
+  "org.webjars" % "webjars-locator" % "0.34",
+  "org.webjars" % "webjars-locator-core" % "0.36",
+  "com.typesafe.play" %% "play-test" % playVersion % "test",
+  "com.typesafe.play" %% "play-specs2" % playVersion % "test",
   "org.webjars" % "bootstrap" % "3.1.0" % "test",
   "org.webjars" % "react" % "0.12.2" % "test",
   "org.webjars" % "bootswatch-yeti" % "3.1.1" % "test"
