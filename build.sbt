@@ -16,7 +16,7 @@ sources in (Compile, play.sbt.routes.RoutesKeys.routes) ++= ((unmanagedResourceD
 
 sources in (Test, play.sbt.routes.RoutesKeys.routes) ++= ((unmanagedResourceDirectories in Test).value * "routes").get
 
-val playVersion = "2.7.0-RC3"
+val playVersion = "2.7.0-RC9"
 
 libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play" % playVersion % "provided",
