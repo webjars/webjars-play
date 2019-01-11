@@ -4,9 +4,9 @@ organization := "org.webjars"
 
 name := "webjars-play"
 
-scalaVersion := "2.11.12"
+scalaVersion := "2.12.8"
 
-crossScalaVersions := Seq("2.11.12", "2.12.7")
+crossScalaVersions := Seq("2.11.12", "2.12.8")
 
 javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
 
