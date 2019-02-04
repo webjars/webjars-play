@@ -21,8 +21,7 @@ val playVersion = "2.7.0"
 libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play" % playVersion % "provided",
   "org.webjars" % "requirejs" % "2.3.6",
-  "org.webjars" % "webjars-locator" % "0.35",
-  "org.webjars" % "webjars-locator-core" % "0.36",
+  "org.webjars" % "webjars-locator" % "0.36",
   "com.typesafe.play" %% "play-test" % playVersion % "test",
   "com.typesafe.play" %% "play-specs2" % playVersion % "test",
   "org.webjars" % "bootstrap" % "3.1.0" % "test",
