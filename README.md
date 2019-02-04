@@ -12,4 +12,4 @@ Releasing webjars-play
 2. Commit
 3. Tag git `v2.x.y-z`
 4. Push tags
-5. Release: `sbt +publishSigned sonatypeReleaseAll`
+5. Release: `sbt +publishSigned +sonatypeRelease`

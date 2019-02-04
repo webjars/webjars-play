@@ -1,3 +1,5 @@
+import xerial.sbt.Sonatype._
+
 lazy val root = (project in file(".")).enablePlugins(play.sbt.routes.RoutesCompiler, GitVersioning, SbtTwirl)
 
 organization := "org.webjars"
@@ -31,36 +33,10 @@ libraryDependencies ++= Seq(
 
 licenses := Seq("MIT License" -> url("http://opensource.org/licenses/MIT"))
 
-homepage := Some(url("http://github.com/webjars/webjars-play"))
+publishTo := sonatypePublishTo.value
 
 publishMavenStyle := true
 
-publishArtifact in Test := false
-
-pomIncludeRepository := { _ => false }
-
-publishTo := {
-  val nexus = "https://oss.sonatype.org/"
-  if (isSnapshot.value)
-    Some("snapshots" at nexus + "content/repositories/snapshots")
-  else
-    Some("releases" at nexus + "service/local/staging/deploy/maven2")
-}
-
-scmInfo := Some(
-  ScmInfo(
-    url("https://github.com/webjars/webjars-play"),
-    "scm:git:https://github.com/webjars/webjars-play.git"
-  )
-)
-
-developers := List(
-  Developer(
-    id    = "jamesward",
-    name  = "James Ward",
-    email = "james@jamesward.com",
-    url   = url("http://jamesward.com")
-  )
-)
+sonatypeProjectHosting := Some(GitHubHosting("webjars", "webjars-play", "james@jamesward.com"))
 
 fork in Test := true

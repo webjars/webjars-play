@@ -1,10 +1,9 @@
 package org.webjars.play
 
 import javax.inject.{Inject, Singleton}
-
 import org.webjars.WebJarAssetLocator
 import play.api.mvc.Call
-import play.api.{Configuration, Environment, Logger, Mode}
+import play.api.{Configuration, Environment, Logging, Mode}
 import play.twirl.api.{Html, HtmlFormat}
 
 import scala.util.{Failure, Success, Try}
@@ -24,7 +23,7 @@ import scala.util.matching.Regex
   * webjars.use-cdn toggles the CDN
   */
 @Singleton
-class WebJarsUtil @Inject() (configuration: Configuration, environment: Environment) {
+class WebJarsUtil @Inject() (configuration: Configuration, environment: Environment) extends Logging {
 
   lazy val webJarFilterExpr: String = configuration.getOptional[String]("webjars.filter-expression").getOrElse(".*")
   lazy val cdnUrl: String = configuration.getOptional[String]("webjars.cdn-url").getOrElse("https://cdn.jsdelivr.net/webjars")
@@ -54,7 +53,7 @@ class WebJarsUtil @Inject() (configuration: Configuration, environment: Environm
           f(assetUrl)
         case Failure(err) =>
           val errMsg = s"couldn't find asset $path"
-          Logger.error(errMsg, err)
+          logger.error(errMsg, err)
           environment.mode match {
             case Mode.Prod =>
               Html("")
