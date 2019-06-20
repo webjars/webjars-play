@@ -1,0 +1,27 @@
+<configuration>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ASYNCSTDOUT" class="ch.qos.logback.classic.AsyncAppender" >
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>OFF</level>
+        </filter>
+        <appender-ref ref="STDOUT" />
+    </appender>
+
+    <logger name="play" level="ERROR" />
+    <logger name="akka.actor" level="ERROR" />
+    <logger name="com.zaxxer.hikari" level="ERROR" />
+    <logger name="akka.event.slf4j" level="ERROR" />
+    <logger name="com.github.mauricio.async.db" level="ERROR" />
+    <logger name="application" level="ERROR" />
+
+    <root>
+        <appender-ref ref="ASYNCSTDOUT" />
+    </root>
+
+</configuration>

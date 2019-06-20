@@ -1,20 +1,18 @@
 package org.webjars.play
 
-import com.typesafe.config.ConfigFactory
+import com.typesafe.config.{ConfigFactory, ConfigValueFactory}
 import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.{Configuration, Environment, Mode}
 import play.api.mvc.Call
-import play.api.test.{FakeRequest, PlaySpecification, WithApplication}
-import play.twirl.api.Html
+import play.api.test.{PlaySpecification, WithApplication}
+import play.api.{Configuration, Environment, Mode}
 
-import scala.collection.JavaConverters._
 import scala.util.Try
 
 class WebJarsUtilSpec extends PlaySpecification {
 
   def prodApp = {
     def loadConfiguration(env: Environment): Configuration = {
-      val ourConfig = ConfigFactory.parseMap(Map("play.http.secret.key" -> "asdfghjk1234567890").asJava)
+      val ourConfig = ConfigFactory.empty().withValue("play.http.secret.key", ConfigValueFactory.fromAnyRef("asdfghjk1234567890"))
       val defaultConfig = ConfigFactory.load()
 
       val config = ourConfig.withFallback(defaultConfig)

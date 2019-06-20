@@ -41,4 +41,6 @@ publishMavenStyle := true
 
 sonatypeProjectHosting := Some(GitHubHosting("webjars", "webjars-play", "james@jamesward.com"))
 
+javaOptions in Test := Seq("-Dlogger.resource=logback-test.xml")
+
 fork in Test := true
