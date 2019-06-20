@@ -6,9 +6,11 @@ organization := "org.webjars"
 
 name := "webjars-play"
 
-scalaVersion := "2.12.8"
+val Scala212 = "2.12.8"
 
-crossScalaVersions := Seq("2.11.12", "2.12.8")
+scalaVersion := Scala212
+
+crossScalaVersions := Seq("2.11.12", Scala212, "2.13.0")
 
 javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
 
@@ -18,7 +20,7 @@ sources in (Compile, play.sbt.routes.RoutesKeys.routes) ++= ((unmanagedResourceD
 
 sources in (Test, play.sbt.routes.RoutesKeys.routes) ++= ((unmanagedResourceDirectories in Test).value * "routes").get
 
-val playVersion = "2.7.0"
+val playVersion = play.core.PlayVersion.current
 
 libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play" % playVersion % "provided",
