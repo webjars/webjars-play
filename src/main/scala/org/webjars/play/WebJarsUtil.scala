@@ -29,23 +29,8 @@ class WebJarsUtil @Inject() (configuration: Configuration, environment: Environm
   lazy val cdnUrl: String = configuration.getOptional[String]("webjars.cdn-url").getOrElse("https://cdn.jsdelivr.net/webjars")
   lazy val useCdn: Boolean = configuration.getOptional[Boolean]("webjars.use-cdn").getOrElse(false)
 
-  class WebJarAsset(val path: Try[String]) {
-    /**
-      * Get the groupId from a path
-      *
-      * @example groupId("jquery/1.9.0/jquery.js") will return "org.webjars" if the classpath contains the org.webjars jquery jar
-      *
-      * @param path a string to parse a WebJar name from
-      * @return the artifact groupId based on the classpath
-      */
-    def groupId(path: String): Try[String] = {
-      val webJar = path.split("/").head
-      val suffix = s"/$webJar/pom.xml"
-      val prefix = "META-INF/maven/"
-      val fullPathTry = Try(webJarAssetLocator.getFullPath(suffix))
-
-      fullPathTry.map(_.stripSuffix(suffix).stripPrefix(prefix))
-    }
+  class WebJarAsset(val fullPath: Try[String]) {
+    lazy val path: Try[String] = fullPath.map(removePrefix)
 
     private[this] def tag(f: String => Html): Html = {
       url match {
@@ -87,24 +72,22 @@ class WebJarsUtil @Inject() (configuration: Configuration, environment: Environm
       * Get the asset's reverse route
       */
     def url: Try[String] =
-      path.flatMap { p =>
-        if (useCdn) {
-          val groupIdTry = groupId(p)
-          groupIdTry.map { groupId =>
-            s"$cdnUrl/$groupId/$p"
+      fullPath.flatMap { fullPath =>
+        path.flatMap { path =>
+          if (useCdn) {
+            val groupIdTry = Try(Option(webJarAssetLocator.groupId(fullPath)).get)
+            groupIdTry.map { groupId =>
+              s"$cdnUrl/$groupId/$path"
+            }
           }
-        }
-        else {
-          Success(routes.WebJarAssets.at(p).url)
+          else {
+            Success(routes.WebJarAssets.at(path).url)
+          }
         }
       }
   }
 
-  private lazy val webJarAssetLocator = new WebJarAssetLocator(
-    WebJarAssetLocator.getFullPathIndex(
-      new Regex(webJarFilterExpr).pattern, environment.classLoader
-    )
-  )
+  private lazy val webJarAssetLocator = new WebJarAssetLocator(environment.classLoader)
 
   private[this] def removePrefix(s: String): String =
     s.stripPrefix(WebJarAssetLocator.WEBJARS_PATH_PREFIX + "/")
@@ -120,8 +103,7 @@ class WebJarsUtil @Inject() (configuration: Configuration, environment: Environm
     *
     */
   def locate(file: String): WebJarAsset = {
-    new WebJarAsset(Try(
-      removePrefix(webJarAssetLocator.getFullPath(file))))
+    new WebJarAsset(Try(webJarAssetLocator.getFullPath(file)))
   }
 
   /**
@@ -133,8 +115,7 @@ class WebJarsUtil @Inject() (configuration: Configuration, environment: Environm
     *
     */
   def locate(webJar: String, path: String): WebJarAsset = {
-    new WebJarAsset(Try(
-      removePrefix(webJarAssetLocator.getFullPath(webJar, path))))
+    new WebJarAsset(Try(webJarAssetLocator.getFullPath(webJar, path)))
   }
 
   /**
@@ -149,7 +130,7 @@ class WebJarsUtil @Inject() (configuration: Configuration, environment: Environm
     *
     */
   def fullPath(webjar: String, path: String): WebJarAsset = {
-    new WebJarAsset(Try(removePrefix(webJarAssetLocator.getFullPathExact(webjar, path))))
+    new WebJarAsset(Try(webJarAssetLocator.getFullPathExact(webjar, path)))
   }
 
   /**

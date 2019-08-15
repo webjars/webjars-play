@@ -1,12 +1,12 @@
 import xerial.sbt.Sonatype._
 
-lazy val root = (project in file(".")).enablePlugins(play.sbt.routes.RoutesCompiler, GitVersioning, SbtTwirl)
+enablePlugins(play.sbt.routes.RoutesCompiler, GitVersioning, SbtTwirl)
 
 organization := "org.webjars"
 
 name := "webjars-play"
 
-val Scala212 = "2.12.8"
+val Scala212 = "2.12.9"
 
 scalaVersion := Scala212
 
@@ -25,7 +25,7 @@ val playVersion = play.core.PlayVersion.current
 libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play" % playVersion % "provided",
   "org.webjars" % "requirejs" % "2.3.6",
-  "org.webjars" % "webjars-locator" % "0.36",
+  "org.webjars" % "webjars-locator" % "0.37",
   "com.typesafe.play" %% "play-test" % playVersion % "test",
   "com.typesafe.play" %% "play-specs2" % playVersion % "test",
   "org.webjars" % "bootstrap" % "3.1.0" % "test",
