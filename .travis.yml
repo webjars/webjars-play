@@ -1,8 +1,30 @@
+---
+sudo: false
 language: scala
-dist: xenial
-jdk:
-  - openjdk8
-script: sbt +test
+scala:
+  - 2.11.12
+  - 2.12.10
+  - 2.13.1
+
+env:
+  - TRAVIS_JDK=8
+  - TRAVIS_JDK=11
+
+before_install: curl -Ls https://git.io/jabba | bash && . ~/.jabba/jabba.sh
+install: jabba install "adopt@~1.$TRAVIS_JDK.0-0" && jabba use "$_" && java -Xmx32m -version
+
+script: sbt ++$TRAVIS_SCALA_VERSION test
+
+cache:
+  directories:
+    - "$HOME/.ivy2/cache"
+    - "$HOME/.jabba/jdk"
+    - "$HOME/.sbt"
+
+before_cache:
+  - find $HOME/.ivy2 -name "ivydata-*.properties" -delete
+  - find $HOME/.sbt  -name "*.lock"               -delete
+
 notifications:
   webhooks:
     urls:
@@ -10,8 +32,3 @@ notifications:
     on_success: always
     on_failure: always
     on_start: always
-cache:
-  directories:
-    - $HOME/.ivy2/cache
-    - $HOME/.sbt/boot
-sudo: false
