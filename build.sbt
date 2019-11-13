@@ -35,7 +35,7 @@ libraryDependencies ++= Seq(
 
 licenses := Seq("MIT License" -> url("http://opensource.org/licenses/MIT"))
 
-publishTo := sonatypePublishTo.value
+publishTo := sonatypePublishToBundle.value
 
 publishMavenStyle := true
 
