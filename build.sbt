@@ -7,10 +7,11 @@ organization := "org.webjars"
 name := "webjars-play"
 
 val Scala212 = "2.12.10"
+val Scala213 = "2.13.1"
 
-scalaVersion := Scala212
+scalaVersion := Scala213
 
-crossScalaVersions := Seq(Scala212, "2.13.1")
+crossScalaVersions := Seq(Scala212, Scala213)
 
 javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
 
