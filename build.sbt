@@ -28,7 +28,7 @@ resolvers += Resolver.mavenLocal
 libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play" % playVersion % "provided",
   "org.webjars" % "requirejs" % "2.3.6",
-  "org.webjars" % "webjars-locator" % "0.38",
+  "org.webjars" % "webjars-locator" % "0.40",
   "com.typesafe.play" %% "play-test" % playVersion % "test",
   "com.typesafe.play" %% "play-specs2" % playVersion % "test",
   "org.webjars" % "bootstrap" % "3.1.0" % "test",
