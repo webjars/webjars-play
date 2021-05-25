@@ -25,6 +25,8 @@ val playVersion = play.core.PlayVersion.current
 
 resolvers += Resolver.mavenLocal
 
+versionScheme := Some("semver-spec")
+
 libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play" % playVersion % "provided",
   "org.webjars" % "requirejs" % "2.3.6",
