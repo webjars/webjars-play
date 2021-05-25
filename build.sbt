@@ -6,8 +6,8 @@ organization := "org.webjars"
 
 name := "webjars-play"
 
-val Scala212 = "2.12.10"
-val Scala213 = "2.13.1"
+val Scala212 = "2.12.13"
+val Scala213 = "2.13.6"
 
 scalaVersion := Scala213
 
@@ -17,9 +17,9 @@ javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
 
 scalacOptions ++= Seq("-unchecked", "-deprecation")
 
-sources in (Compile, play.sbt.routes.RoutesKeys.routes) ++= ((unmanagedResourceDirectories in Compile).value * "webjars.routes").get
+Compile / play.sbt.routes.RoutesKeys.routes / sources ++= ((Compile / unmanagedResourceDirectories).value * "webjars.routes").get
 
-sources in (Test, play.sbt.routes.RoutesKeys.routes) ++= ((unmanagedResourceDirectories in Test).value * "routes").get
+Test / play.sbt.routes.RoutesKeys.routes / sources ++= ((Test / unmanagedResourceDirectories).value * "routes").get
 
 val playVersion = play.core.PlayVersion.current
 
@@ -44,6 +44,6 @@ publishMavenStyle := true
 
 sonatypeProjectHosting := Some(GitHubHosting("webjars", "webjars-play", "james@jamesward.com"))
 
-javaOptions in Test := Seq("-Dlogger.resource=logback-test.xml")
+Test / javaOptions := Seq("-Dlogger.resource=logback-test.xml")
 
-fork in Test := true
+Test / fork := true

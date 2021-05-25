@@ -87,16 +87,7 @@ class WebJarsUtil @Inject() (configuration: Configuration, environment: Environm
       }
   }
 
-  private lazy val webJarAssetLocator = {
-    // we don't need to set a custom classloader if it's the context classloader
-    // cause doing so makes it so the classloader can't be scanned on jdk 11
-    if (environment.classLoader == Thread.currentThread().getContextClassLoader) {
-      new WebJarAssetLocator()
-    }
-    else {
-      new WebJarAssetLocator(environment.classLoader)
-    }
-  }
+  private lazy val webJarAssetLocator = new WebJarAssetLocator()
 
   private[this] def removePrefix(s: String): String =
     s.stripPrefix(WebJarAssetLocator.WEBJARS_PATH_PREFIX + "/")

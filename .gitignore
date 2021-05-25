@@ -4,6 +4,7 @@
 /.idea_modules
 /project/project
 /project/target/
+/.bsp/
 .cache
 .classpath
 .project

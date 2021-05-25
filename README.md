@@ -8,8 +8,7 @@ A user guide for this plugin can be found within the [WebJars Documentation](htt
 Releasing webjars-play
 ----------------------
 
-1. Set the release version in `build.sbt`
-2. Commit
-3. Tag git `v2.x.y-z`
-4. Push tags
-5. Release: `sbt +publishSigned sonatypeBundleRelease`
+1. Commit
+1. Tag git `v2.x.y-z`
+1. Push tags
+1. Release: `sbt +publishSigned sonatypeBundleRelease`
