@@ -4,6 +4,7 @@ language: scala
 scala:
   - 2.12.10
   - 2.13.1
+  - 3.0.1
 
 env:
   - TRAVIS_JDK=8
