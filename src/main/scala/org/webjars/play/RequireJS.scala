@@ -3,10 +3,11 @@ package org.webjars.play
 import javax.inject.{Inject, Singleton}
 
 import play.api.http.MimeTypes
-import play.api.mvc.{Action, AnyContent, InjectedController}
+import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
 
 @Singleton
-class RequireJS @Inject() (webJarsUtil: WebJarsUtil) extends InjectedController {
+class RequireJS @Inject() (webJarsUtil: WebJarsUtil, controllerComponents: ControllerComponents)
+  extends AbstractController(controllerComponents) {
 
   def setup(): Action[AnyContent] = Action {
     val setupJavaScript = if (webJarsUtil.useCdn) {
