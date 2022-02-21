@@ -6,6 +6,7 @@ import play.api.test.{FakeRequest, PlaySpecification, WithApplication}
 class RequireJSSpec extends PlaySpecification {
 
   "RequireJS" should {
+    // todo: validate this is valid JS
     "produce a setup" in new WithApplication {
       val requireJs = app.injector.instanceOf[RequireJS]
 
@@ -13,7 +14,7 @@ class RequireJSSpec extends PlaySpecification {
 
       status(result) must equalTo(OK)
       contentType(result) must beSome(MimeTypes.JAVASCRIPT)
-      contentAsString(result) must contain("return ['/' + webJarId")
+      contentAsString(result) must contain("return [\n                '/' + webJarId")
       contentAsString(result) must contain("\"requirejs\":\"2.3.6\"")
     }
     "produce a setup using a cdn" in new WithApplication(_.configure("webjars.use-cdn" -> "true")) {
