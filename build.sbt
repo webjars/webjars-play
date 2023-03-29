@@ -29,24 +29,15 @@ resolvers += Resolver.mavenLocal
 versionScheme := Some("semver-spec")
 
 libraryDependencies ++= Seq(
-  "com.typesafe.play" %% "play" % playVersion % "provided" cross CrossVersion.for3Use2_13,
+  "com.typesafe.play" %% "play" % playVersion % "provided",
   "org.webjars" % "requirejs" % "2.3.6",
   "org.webjars" % "webjars-locator" % "0.46" exclude("com.fasterxml.jackson.core", "jackson-databind"),
-  "com.typesafe.play" %% "play-test" % playVersion % "test" cross CrossVersion.for3Use2_13,
-  "com.typesafe.play" %% "play-specs2" % playVersion % "test" cross CrossVersion.for3Use2_13,
+  "com.typesafe.play" %% "play-test" % playVersion % "test",
+  "com.typesafe.play" %% "play-specs2" % playVersion % "test",
   "org.webjars" % "bootstrap" % "3.1.0" % "test",
   "org.webjars" % "react" % "0.12.2" % "test",
   "org.webjars" % "bootswatch-yeti" % "3.1.1" % "test"
 )
-
-libraryDependencies ~= {
-  _.map {
-    case module if module.name == "twirl-api" =>
-      module cross CrossVersion.for3Use2_13
-    case module =>
-      module
-  }
-}
 
 licenses := Seq("MIT License" -> url("http://opensource.org/licenses/MIT"))
 

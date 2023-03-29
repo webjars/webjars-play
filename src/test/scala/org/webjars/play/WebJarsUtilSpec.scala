@@ -12,7 +12,7 @@ class WebJarsUtilSpec extends PlaySpecification {
 
   def prodApp: Application = {
     def loadConfiguration(env: Environment): Configuration = {
-      val ourConfig = ConfigFactory.parseString("play.http.secret.key=asdfghjk1234567890")
+      val ourConfig = ConfigFactory.parseString("play.http.secret.key=asdfghjk1234567890123456789asdfj")
       val defaultConfig = ConfigFactory.load()
 
       val config = ourConfig.withFallback(defaultConfig)
