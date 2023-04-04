@@ -38,7 +38,7 @@ class WebJarsUtilSpec extends PlaySpecification {
         val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
 
         val bootstrapPath = webJarsUtil.locate("bootswatch-yeti", "bootstrap.min.css")
-        bootstrapPath.path must beASuccessfulTry("bootswatch-yeti/3.1.1/css/bootstrap.min.css")
+        bootstrapPath.path must beASuccessfulTry("bootswatch-yeti/3.1.1+1/css/bootstrap.min.css")
       }
     }
     "get a MultipleMatchesException if there are multiple matches" in new WithApplication {
@@ -79,7 +79,7 @@ class WebJarsUtilSpec extends PlaySpecification {
       override def running() = {
         val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
         val script = webJarsUtil.locate("jquery.js").script()
-        script.body.trim must beEqualTo("""<script src="/jquery/1.9.0/jquery.js" ></script>""")
+        script.body.trim must beEqualTo("""<script src="/jquery/1.11.1/jquery.js" ></script>""")
       }
     }
     "generate an error comment when the path isn't found" in new WithApplication {
@@ -101,14 +101,14 @@ class WebJarsUtilSpec extends PlaySpecification {
       override def running() = {
         val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
         val script = webJarsUtil.locate("jquery.js").script()
-        script.body.trim must beEqualTo("""<script src="https://cdn.jsdelivr.net/webjars/org.webjars/jquery/1.9.0/jquery.js" ></script>""")
+        script.body.trim must beEqualTo("""<script src="https://cdn.jsdelivr.net/webjars/org.webjars/jquery/1.11.1/jquery.js" ></script>""")
       }
     }
     "generate a css tag from a partial WebJar path" in new WithApplication {
       override def running() = {
         val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
         val css = webJarsUtil.locate("bootswatch-yeti", "bootstrap.css").css()
-        css.body.trim must beEqualTo("""<link rel="stylesheet" type="text/css" href="/bootswatch-yeti/3.1.1/css/bootstrap.css" >""")
+        css.body.trim must beEqualTo("""<link rel="stylesheet" type="text/css" href="/bootswatch-yeti/3.1.1+1/css/bootstrap.css" >""")
       }
     }
     "generate an error comment when the path isn't found" in new WithApplication {
@@ -130,14 +130,14 @@ class WebJarsUtilSpec extends PlaySpecification {
       override def running() = {
         val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
         val css = webJarsUtil.locate("bootswatch-yeti", "bootstrap.css").css()
-        css.body.trim must beEqualTo("""<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/webjars/org.webjars/bootswatch-yeti/3.1.1/css/bootstrap.css" >""")
+        css.body.trim must beEqualTo("""<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/webjars/org.webjars/bootswatch-yeti/3.1.1+1/css/bootstrap.css" >""")
       }
     }
     "generate an img tag from a partial WebJar path" in new WithApplication {
       override def running() = {
         val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
         val img = webJarsUtil.locate("bootswatch-yeti", "bootstrap.css").img()
-        img.body.trim must beEqualTo("""<img src="/bootswatch-yeti/3.1.1/css/bootstrap.css" >""")
+        img.body.trim must beEqualTo("""<img src="/bootswatch-yeti/3.1.1+1/css/bootstrap.css" >""")
       }
     }
     "generate an error comment when the path isn't found" in new WithApplication {
@@ -159,7 +159,7 @@ class WebJarsUtilSpec extends PlaySpecification {
       override def running() = {
         val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
         val img = webJarsUtil.locate("bootswatch-yeti", "bootstrap.css").img()
-        img.body.trim must beEqualTo("""<img src="https://cdn.jsdelivr.net/webjars/org.webjars/bootswatch-yeti/3.1.1/css/bootstrap.css" >""")
+        img.body.trim must beEqualTo("""<img src="https://cdn.jsdelivr.net/webjars/org.webjars/bootswatch-yeti/3.1.1+1/css/bootstrap.css" >""")
       }
     }
     "generate a requireJs config" in new WithApplication {
