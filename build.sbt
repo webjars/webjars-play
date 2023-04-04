@@ -40,10 +40,6 @@ libraryDependencies ++= Seq(
 
 licenses := Seq("MIT License" -> url("http://opensource.org/licenses/MIT"))
 
-publishTo := sonatypePublishToBundle.value
-
-publishMavenStyle := true
-
 sonatypeProjectHosting := Some(GitHubHosting("webjars", "webjars-play", "james@jamesward.com"))
 
 Test / javaOptions := Seq("-Dlogger.resource=logback-test.xml")
