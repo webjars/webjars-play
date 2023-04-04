@@ -4,7 +4,7 @@ addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.8.19")
 
 addSbtPlugin("com.typesafe.sbt" % "sbt-git" % "1.0.2")
 
-addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "3.8.1")
+addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "3.9.18")
 
 // https://github.com/sbt/sbt/issues/7007
 ThisBuild / libraryDependencySchemes ++= Seq(
