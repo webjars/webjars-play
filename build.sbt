@@ -35,7 +35,7 @@ libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-test" % playVersion % "test" cross CrossVersion.for3Use2_13,
   "com.typesafe.play" %% "play-specs2" % playVersion % "test" cross CrossVersion.for3Use2_13,
   "org.webjars" % "bootstrap" % "3.4.1" % "test",
-  "org.webjars" % "react" % "0.14.8" % "test",
+  "org.webjars" % "react" % "16.5.2" % "test",
   "org.webjars" % "bootswatch-yeti" % "3.3.7" % "test"
 )
 
