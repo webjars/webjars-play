@@ -34,9 +34,9 @@ libraryDependencies ++= Seq(
   "org.webjars" % "webjars-locator" % "0.46" exclude("com.fasterxml.jackson.core", "jackson-databind"),
   "com.typesafe.play" %% "play-test" % playVersion % "test" cross CrossVersion.for3Use2_13,
   "com.typesafe.play" %% "play-specs2" % playVersion % "test" cross CrossVersion.for3Use2_13,
-  "org.webjars" % "bootstrap" % "3.1.1-2" % "test",
+  "org.webjars" % "bootstrap" % "3.4.1" % "test",
   "org.webjars" % "react" % "0.14.8" % "test",
-  "org.webjars" % "bootswatch-yeti" % "3.1.1+1" % "test"
+  "org.webjars" % "bootswatch-yeti" % "3.3.7" % "test"
 )
 
 libraryDependencies ~= {

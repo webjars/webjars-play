@@ -24,7 +24,7 @@ class RequireJSSpec extends PlaySpecification {
 
       status(result) must equalTo(OK)
       contentType(result) must beSome(MimeTypes.JAVASCRIPT)
-      contentAsString(result) must contain("""["https://cdn.jsdelivr.net/webjars/react/0.12.2/react","/react/0.12.2/react","react"]""")
+      contentAsString(result) must contain("""["https://cdn.jsdelivr.net/webjars/react/0.14.8/react","/react/0.14.8/react","react"]""")
     }
   }
 
