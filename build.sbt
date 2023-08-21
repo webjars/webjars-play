@@ -30,7 +30,7 @@ versionScheme := Some("semver-spec")
 libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play" % playVersion % "provided",
   "org.webjars" % "requirejs" % "2.3.6",
-  "org.webjars" % "webjars-locator" % "0.46" exclude("com.fasterxml.jackson.core", "jackson-databind"),
+  "org.webjars" % "webjars-locator" % "0.50" exclude("com.fasterxml.jackson.core", "jackson-databind"),
   "com.typesafe.play" %% "play-test" % playVersion % "test",
   "com.typesafe.play" %% "play-specs2" % playVersion % "test",
   "org.webjars" % "bootstrap" % "3.1.1-2" % "test",
