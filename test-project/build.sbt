@@ -2,7 +2,7 @@ name := "test-project"
 
 version := "1.0"
 
-scalaVersion := "2.13.6"
+scalaVersion := "2.13.12"
 
 libraryDependencies ++= Seq(
   guice,
