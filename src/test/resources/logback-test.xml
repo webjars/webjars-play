@@ -14,9 +14,9 @@
     </appender>
 
     <logger name="play" level="ERROR" />
-    <logger name="akka.actor" level="ERROR" />
+    <logger name="org.apache.pekko.actor" level="ERROR" />
     <logger name="com.zaxxer.hikari" level="ERROR" />
-    <logger name="akka.event.slf4j" level="ERROR" />
+    <logger name="org.apache.pekko.event.slf4j" level="ERROR" />
     <logger name="com.github.mauricio.async.db" level="ERROR" />
     <logger name="application" level="ERROR" />
 
