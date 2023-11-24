@@ -33,7 +33,7 @@ libraryDependencies ++= Seq(
   "org.webjars" % "webjars-locator" % "0.50",
   "org.playframework" %% "play-test" % playVersion % "test",
   "org.playframework" %% "play-specs2" % playVersion % "test",
-  "org.webjars" % "bootstrap" % "3.1.1-2" % "test",
+  "org.webjars" % "bootstrap" % "3.4.1" % "test",
   "org.webjars" % "react" % "0.12.2" % "test",
   "org.webjars" % "bootswatch-yeti" % "3.1.1+1" % "test"
 )
