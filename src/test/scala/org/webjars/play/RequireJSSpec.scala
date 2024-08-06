@@ -16,7 +16,7 @@ class RequireJSSpec extends PlaySpecification {
         status(result) must equalTo(OK)
         contentType(result) must beSome(MimeTypes.JAVASCRIPT)
         contentAsString(result) must contain("return [\n                '/' + webJarId")
-        contentAsString(result) must contain("\"requirejs\":\"2.3.6\"")
+        contentAsString(result) must contain("\"requirejs\":\"2.3.7\"")
       }
     }
     "produce a setup using a cdn" in new WithApplication(_.configure("webjars.use-cdn" -> "true")) {

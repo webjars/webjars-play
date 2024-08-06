@@ -29,7 +29,7 @@ versionScheme := Some("semver-spec")
 
 libraryDependencies ++= Seq(
   "org.playframework" %% "play" % playVersion % "provided",
-  "org.webjars" % "requirejs" % "2.3.6",
+  "org.webjars" % "requirejs" % "2.3.7",
   "org.webjars" % "webjars-locator" % "0.52",
   "org.playframework" %% "play-test" % playVersion % "test",
   "org.playframework" %% "play-specs2" % playVersion % "test",
