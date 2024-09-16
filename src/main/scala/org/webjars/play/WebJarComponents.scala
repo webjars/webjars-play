@@ -16,6 +16,6 @@ trait WebJarComponents {
 
   lazy val webJarsUtil = new WebJarsUtil(configuration, environment)
 
-  lazy val webJarAssets = new WebJarAssets(httpErrorHandler, assetsMetadata)
+  lazy val webJarAssets = new WebJarAssets(httpErrorHandler, assetsMetadata, environment)
 
 }
