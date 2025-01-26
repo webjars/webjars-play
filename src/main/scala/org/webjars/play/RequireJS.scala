@@ -1,6 +1,6 @@
 package org.webjars.play
 
-import javax.inject.{Inject, Singleton}
+import jakarta.inject.{Inject, Singleton}
 
 import play.api.http.MimeTypes
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}

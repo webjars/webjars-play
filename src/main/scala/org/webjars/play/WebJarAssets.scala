@@ -1,7 +1,7 @@
 package org.webjars.play
 
 
-import javax.inject.Inject
+import jakarta.inject.Inject
 import controllers.AssetsMetadata
 import org.webjars.WebJarAssetLocator
 import play.api.Environment
