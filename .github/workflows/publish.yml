@@ -8,8 +8,8 @@ on:
 
 jobs:
   publish-artifacts:
-    name: JDK 11
-    runs-on: ubuntu-20.04
+    name: JDK 17
+    runs-on: ubuntu-24.04
     if: ${{ github.repository_owner == 'webjars' }}
     steps:
       - name: Checkout
@@ -25,7 +25,7 @@ jobs:
       - name: Install Adoptium Temurin OpenJDK
         uses: coursier/setup-action@v1
         with:
-          jvm: adoptium:11
+          jvm: adoptium:17
 
       - name: Publish artifacts
         run: sbt ci-release
