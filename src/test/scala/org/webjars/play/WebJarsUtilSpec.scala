@@ -29,7 +29,7 @@ class WebJarsUtilSpec extends PlaySpecification {
       override def running() = {
         val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
 
-        val requireJsPath = webJarsUtil.locate("require.js")
+        val requireJsPath = webJarsUtil.locate("requirejs", "require.js")
         requireJsPath.path must beASuccessfulTry("requirejs/2.3.7/require.js")
       }
     }
@@ -37,128 +37,113 @@ class WebJarsUtilSpec extends PlaySpecification {
       override def running() = {
         val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
 
-        val bootstrapPath = webJarsUtil.locate("bootswatch-yeti", "bootstrap.min.css")
+        val bootstrapPath = webJarsUtil.locate("bootswatch-yeti", "css/bootstrap.min.css")
         bootstrapPath.path must beASuccessfulTry("bootswatch-yeti/3.1.1+1/css/bootstrap.min.css")
-      }
-    }
-    "get a MultipleMatchesException if there are multiple matches" in new WithApplication {
-      override def running() = {
-        val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
-
-        webJarsUtil.locate("react.js").path must beAFailedTry
-        webJarsUtil.locate("react", "react.js").path must beAFailedTry
-      }
-    }
-    "be able to locate an asset which normally has multiple matches" in new WithApplication {
-      override def running() = {
-        val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
-        webJarsUtil.fullPath("react", "react.js").path must beASuccessfulTry("react/0.12.2/react.js")
       }
     }
     "url" in new WithApplication {
       override def running() = {
         val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
-        webJarsUtil.locate("requirejs/2.3.7/require.js").url must beASuccessfulTry("/requirejs/2.3.7/require.js")
-        webJarsUtil.locate("requirejs", "requirejs/2.3.7/require.js").url must beASuccessfulTry("/requirejs/2.3.7/require.js")
-        webJarsUtil.locate("asdf1234qwer4321").url must beAFailedTry
+        webJarsUtil.locate("requirejs", "require.js").url must beASuccessfulTry("/requirejs/2.3.7/require.js")
+        webJarsUtil.locate("asdf1234qwer4321", "asdf1234qwer4321").url must beAFailedTry
       }
     }
     "url with a cdn" in new WithApplication(_.configure("webjars.use-cdn" -> "true")) {
       override def running() = {
         val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
-        webJarsUtil.locate("require.js").url must beASuccessfulTry("https://cdn.jsdelivr.net/webjars/org.webjars/requirejs/2.3.7/require.js")
+        webJarsUtil.locate("requirejs", "require.js").url must beASuccessfulTry("https://cdn.jsdelivr.net/webjars/org.webjars/requirejs/2.3.7/require.js")
       }
     }
     "url with a custom cdn" in new WithApplication(_.configure("webjars.use-cdn" -> "true", "webjars.cdn-url" -> "http://asdf.com")) {
       override def running() = {
         val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
-        webJarsUtil.locate("require.js").url must beASuccessfulTry("http://asdf.com/org.webjars/requirejs/2.3.7/require.js")
+        webJarsUtil.locate("requirejs", "require.js").url must beASuccessfulTry("http://asdf.com/org.webjars/requirejs/2.3.7/require.js")
       }
     }
     "generate a script tag from a partial WebJar path" in new WithApplication {
       override def running() = {
         val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
-        val script = webJarsUtil.locate("jquery.js").script()
+        val script = webJarsUtil.locate("jquery", "jquery.js").script()
         script.body.trim must beEqualTo("""<script src="/jquery/1.11.1/jquery.js" ></script>""")
       }
     }
-    "generate an error comment when the path isn't found" in new WithApplication {
+    "generate an error comment when the webjar isn't found" in new WithApplication {
       override def running() = {
         val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
-        val script = Try(webJarsUtil.locate("asdf1234").script())
+        val script = Try(webJarsUtil.locate("asdf1234", "asdf1234").script())
         script must beAFailedTry
       }
     }
-    "generate an empty string when the path isn't found in prod mode" in new WithProdApplication {
+    "generate an empty string when the webjar isn't found in prod mode" in new WithProdApplication {
       override def running() = {
         app.environment.mode must beEqualTo(Mode.Prod)
         val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
-        val script = webJarsUtil.locate("asdf1234").script()
+        val script = webJarsUtil.locate("asdf1234", "asdf1234").script()
         script.body must beEqualTo("")
       }
     }
     "generate a script tag with a cdn url from a partial WebJar path" in new WithApplication(_.configure("webjars.use-cdn" -> "true")) {
       override def running() = {
         val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
-        val script = webJarsUtil.locate("jquery.js").script()
+        val script = webJarsUtil.locate("jquery", "jquery.js").script()
         script.body.trim must beEqualTo("""<script src="https://cdn.jsdelivr.net/webjars/org.webjars/jquery/1.11.1/jquery.js" ></script>""")
       }
     }
     "generate a css tag from a partial WebJar path" in new WithApplication {
       override def running() = {
         val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
-        val css = webJarsUtil.locate("bootswatch-yeti", "bootstrap.css").css()
+        val css = webJarsUtil.locate("bootswatch-yeti", "css/bootstrap.css").css()
         css.body.trim must beEqualTo("""<link rel="stylesheet" type="text/css" href="/bootswatch-yeti/3.1.1+1/css/bootstrap.css" >""")
       }
     }
-    "generate an error comment when the path isn't found" in new WithApplication {
+    "generate an error comment when the webjar isn't found" in new WithApplication {
       override def running() = {
         val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
-        val css = Try(webJarsUtil.locate("asdf1234").css())
+        val css = Try(webJarsUtil.locate("asdf1234", "asdf1234").css())
         css must beAFailedTry
       }
     }
-    "generate an empty string when the path isn't found in prod mode" in new WithProdApplication {
+    "generate an empty string when the webjar isn't found in prod mode" in new WithProdApplication {
       override def running() = {
         app.environment.mode must beEqualTo(Mode.Prod)
         val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
-        val css = webJarsUtil.locate("asdf1234").css()
+        val css = webJarsUtil.locate("asdf1234", "asdf1234").css()
         css.body must beEqualTo("")
       }
     }
     "generate a css tag with a cdn url from a partial WebJar path" in new WithApplication(_.configure("webjars.use-cdn" -> "true")) {
       override def running() = {
         val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
-        val css = webJarsUtil.locate("bootswatch-yeti", "bootstrap.css").css()
+        val css = webJarsUtil.locate("bootswatch-yeti", "css/bootstrap.css").css()
         css.body.trim must beEqualTo("""<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/webjars/org.webjars/bootswatch-yeti/3.1.1+1/css/bootstrap.css" >""")
       }
     }
     "generate an img tag from a partial WebJar path" in new WithApplication {
       override def running() = {
         val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
-        val img = webJarsUtil.locate("bootswatch-yeti", "bootstrap.css").img()
+        val img = webJarsUtil.locate("bootswatch-yeti", "css/bootstrap.css").img()
         img.body.trim must beEqualTo("""<img src="/bootswatch-yeti/3.1.1+1/css/bootstrap.css" >""")
       }
     }
-    "generate an error comment when the path isn't found" in new WithApplication {
+    "generate an error comment when the webjar isn't found" in new WithApplication {
       override def running() = {
         val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
-        val img = Try(webJarsUtil.locate("asdf1234").img())
+        val img = Try(webJarsUtil.locate("asdf1234", "asdf1234").img())
         img must beAFailedTry
       }
     }
-    "generate an empty string when the path isn't found in prod mode" in new WithProdApplication {
+    "generate an empty string when the webjar isn't found in prod mode" in new WithProdApplication {
       override def running() = {
         app.environment.mode must beEqualTo(Mode.Prod)
         val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
-        val img = webJarsUtil.locate("asdf1234").img()
+        val img = webJarsUtil.locate("asdf1234", "asdf1234").img()
         img.body must beEqualTo("")
       }
     }
     "generate a css tag with a cdn url from a partial WebJar path" in new WithApplication(_.configure("webjars.use-cdn" -> "true")) {
       override def running() = {
         val webJarsUtil = app.injector.instanceOf[WebJarsUtil]
-        val img = webJarsUtil.locate("bootswatch-yeti", "bootstrap.css").img()
+        val img = webJarsUtil.locate("bootswatch-yeti", "css/bootstrap.css").img()
         img.body.trim must beEqualTo("""<img src="https://cdn.jsdelivr.net/webjars/org.webjars/bootswatch-yeti/3.1.1+1/css/bootstrap.css" >""")
       }
     }

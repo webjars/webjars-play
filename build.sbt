@@ -1,5 +1,3 @@
-import xerial.sbt.Sonatype._
-
 enablePlugins(play.sbt.routes.RoutesCompiler, GitVersioning, SbtTwirl)
 
 organization := "org.webjars"
@@ -25,12 +23,11 @@ val playVersion = play.core.PlayVersion.current
 
 resolvers += Resolver.mavenLocal
 
-versionScheme := Some("semver-spec")
-
 libraryDependencies ++= Seq(
   "org.playframework" %% "play" % playVersion % "provided",
   "org.webjars" % "requirejs" % "2.3.7",
-  "org.webjars" % "webjars-locator" % "0.52",
+  "org.webjars" % "webjars-locator" % "0.52", // for RequireJS support
+  "org.webjars" % "webjars-locator-lite" % "1.1.1",
   "org.playframework" %% "play-test" % playVersion % "test",
   "org.playframework" %% "play-specs2" % playVersion % "test",
   "org.webjars" % "bootstrap" % "3.1.1-2" % "test",
@@ -40,7 +37,18 @@ libraryDependencies ++= Seq(
 
 licenses := Seq("MIT License" -> url("http://opensource.org/licenses/MIT"))
 
-sonatypeProjectHosting := Some(GitHubHosting("webjars", "webjars-play", "james@jamesward.com"))
+homepage := Some(url("https://github.com/webjars/webjars-play"))
+
+developers := List(
+  Developer(
+    "jamesward",
+    "James Ward",
+    "james@jamesward.com",
+    url("https://jamesward.com")
+  )
+)
+
+versionScheme := Some("semver-spec")
 
 Test / javaOptions := Seq("-Dlogger.resource=logback-test.xml")
 

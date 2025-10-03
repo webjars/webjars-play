@@ -1,9 +1,9 @@
 package org.webjars.play
 
-import jakarta.inject.{Inject, Singleton}
-
 import play.api.http.MimeTypes
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents}
+
+import javax.inject.{Inject, Singleton}
 
 @Singleton
 class RequireJS @Inject() (webJarsUtil: WebJarsUtil, controllerComponents: ControllerComponents)
