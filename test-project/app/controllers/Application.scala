@@ -1,6 +1,6 @@
 package controllers
 
-import jakarta.inject.{Inject, Singleton}
+import javax.inject.{Inject, Singleton}
 
 import org.webjars.play.{RequireJS, WebJarAssets, WebJarsUtil}
 import play.api.mvc.{Action, InjectedController}

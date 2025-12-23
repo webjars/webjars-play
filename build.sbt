@@ -11,9 +11,9 @@ scalaVersion := Scala213
 
 crossScalaVersions := Seq(Scala213, Scala3)
 
-javacOptions ++= Seq("--release", "17")
+javacOptions ++= Seq("--release", "11")
 
-scalacOptions ++= Seq("-release", "17","-unchecked", "-deprecation")
+scalacOptions ++= Seq("-release", "11","-unchecked", "-deprecation")
 
 Compile / play.sbt.routes.RoutesKeys.routes / sources ++= ((Compile / unmanagedResourceDirectories).value * "webjars.routes").get
 
