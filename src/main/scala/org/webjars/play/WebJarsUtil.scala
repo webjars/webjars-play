@@ -1,6 +1,6 @@
 package org.webjars.play
 
-import javax.inject.{Inject, Singleton}
+import jakarta.inject.{Inject, Singleton}
 import org.webjars.WebJarVersionLocator
 import play.api.mvc.Call
 import play.api.{Configuration, Environment, Logging, Mode}
