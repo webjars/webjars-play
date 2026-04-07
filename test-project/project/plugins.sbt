@@ -1,1 +1,1 @@
-addSbtPlugin("org.playframework" % "sbt-plugin" % "3.1.0-M4")
+addSbtPlugin("org.playframework" % "sbt-plugin" % "3.1.0-M5")

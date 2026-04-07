@@ -5,7 +5,7 @@ organization := "org.webjars"
 name := "webjars-play"
 
 val Scala213 = "2.13.18"
-val Scala3 = "3.3.7"
+val Scala3 = "3.8.3"
 
 scalaVersion := Scala213
 
