@@ -34,6 +34,7 @@ Test / play.sbt.routes.RoutesKeys.routes / sources ++= ((Test / unmanagedResourc
 val playVersion = play.core.PlayVersion.current
 
 resolvers += Resolver.mavenLocal
+resolvers += Resolver.sonatypeCentralSnapshots
 
 libraryDependencies ++= Seq(
   "org.playframework" %% "play" % playVersion % "provided",

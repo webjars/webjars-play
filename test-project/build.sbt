@@ -2,6 +2,8 @@ name := "test-project"
 
 version := "1.0"
 
+resolvers ++= Seq(Resolver.sonatypeCentralSnapshots, Resolver.ApacheMavenSnapshotsRepo)
+
 scalaVersion := "2.13.18"
 
 libraryDependencies ++= Seq(
