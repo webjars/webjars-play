@@ -1,27 +1,40 @@
-enablePlugins(play.sbt.routes.RoutesCompiler, GitVersioning, SbtTwirl)
+enablePlugins(play.sbt.routes.RoutesCompiler, SbtTwirl)
 
 organization := "org.webjars"
 
 name := "webjars-play"
 
 val Scala213 = "2.13.18"
-val Scala3 = "3.8.3"
+val Scala33LTS = "3.3.8"
+val Scala39LTS = "3.9.0"
+val Scala3Next = "3.10.0-RC2"
 
-scalaVersion := Scala213
+val ScalaVersionAliases = Map(
+  "2.13.x" -> Scala213,
+  "3.3.x"  -> Scala33LTS,
+  "3.9.x"  -> Scala39LTS,
+  "3.next" -> Scala3Next
+)
 
-crossScalaVersions := Seq(Scala213, Scala3)
+def resolveScalaVersion(version: String): String = ScalaVersionAliases.getOrElse(version, version)
+
+scalaVersion := resolveScalaVersion(sys.props.getOrElse("scala.version", Scala213))
+
+crossScalaVersions := Seq(Scala213, Scala33LTS)
 
 javacOptions ++= Seq("--release", "17")
 
-scalacOptions ++= Seq("-release", "17","-unchecked", "-deprecation")
+scalacOptions ++= Seq("-release", "17", "-unchecked", "-deprecation") ++
+  (if (scalaVersion.value.startsWith("3.3.")) Seq("-Yfuture-lazy-vals") else Seq.empty)
 
-Compile / play.sbt.routes.RoutesKeys.routes / sources ++= ((Compile / unmanagedResourceDirectories).value * "webjars.routes").get
+Compile / play.sbt.routes.RoutesKeys.routes / sources ++= ((Compile / unmanagedResourceDirectories).value * "webjars.routes").get()
 
-Test / play.sbt.routes.RoutesKeys.routes / sources ++= ((Test / unmanagedResourceDirectories).value * "routes").get
+Test / play.sbt.routes.RoutesKeys.routes / sources ++= ((Test / unmanagedResourceDirectories).value * "routes").get()
 
 val playVersion = play.core.PlayVersion.current
 
 resolvers += Resolver.mavenLocal
+resolvers += Resolver.sonatypeCentralSnapshots
 
 libraryDependencies ++= Seq(
   "org.playframework" %% "play" % playVersion % "provided",
@@ -35,16 +48,16 @@ libraryDependencies ++= Seq(
   "org.webjars" % "bootswatch-yeti" % "3.1.1+1" % "test"
 )
 
-licenses := Seq("MIT License" -> url("http://opensource.org/licenses/MIT"))
+licenses := Seq("MIT License" -> uri("http://opensource.org/licenses/MIT"))
 
-homepage := Some(url("https://github.com/webjars/webjars-play"))
+homepage := Some(uri("https://github.com/webjars/webjars-play"))
 
 developers := List(
   Developer(
     "jamesward",
     "James Ward",
     "james@jamesward.com",
-    url("https://jamesward.com")
+    uri("https://jamesward.com")
   )
 )
 
