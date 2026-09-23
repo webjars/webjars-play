@@ -1,4 +1,4 @@
-enablePlugins(play.sbt.routes.RoutesCompiler, GitVersioning, SbtTwirl)
+enablePlugins(play.sbt.routes.RoutesCompiler, SbtTwirl)
 
 organization := "org.webjars"
 
@@ -27,9 +27,9 @@ javacOptions ++= Seq("--release", "17")
 scalacOptions ++= Seq("-release", "17", "-unchecked", "-deprecation") ++
   (if (scalaVersion.value.startsWith("3.3.")) Seq("-Yfuture-lazy-vals") else Seq.empty)
 
-Compile / play.sbt.routes.RoutesKeys.routes / sources ++= ((Compile / unmanagedResourceDirectories).value * "webjars.routes").get
+Compile / play.sbt.routes.RoutesKeys.routes / sources ++= ((Compile / unmanagedResourceDirectories).value * "webjars.routes").get()
 
-Test / play.sbt.routes.RoutesKeys.routes / sources ++= ((Test / unmanagedResourceDirectories).value * "routes").get
+Test / play.sbt.routes.RoutesKeys.routes / sources ++= ((Test / unmanagedResourceDirectories).value * "routes").get()
 
 val playVersion = play.core.PlayVersion.current
 
@@ -47,16 +47,16 @@ libraryDependencies ++= Seq(
   "org.webjars" % "bootswatch-yeti" % "3.1.1+1" % "test"
 )
 
-licenses := Seq("MIT License" -> url("http://opensource.org/licenses/MIT"))
+licenses := Seq("MIT License" -> uri("http://opensource.org/licenses/MIT"))
 
-homepage := Some(url("https://github.com/webjars/webjars-play"))
+homepage := Some(uri("https://github.com/webjars/webjars-play"))
 
 developers := List(
   Developer(
     "jamesward",
     "James Ward",
     "james@jamesward.com",
-    url("https://jamesward.com")
+    uri("https://jamesward.com")
   )
 )
 
