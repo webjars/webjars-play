@@ -7,7 +7,7 @@ name := "webjars-play"
 val Scala213 = "2.13.18"
 val Scala33LTS = "3.3.8"
 val Scala39LTS = "3.9.0"
-val Scala3Next = "3.10.0-RC2"
+val Scala3Next = "3.10.1"
 
 val ScalaVersionAliases = Map(
   "2.13.x" -> Scala213,
